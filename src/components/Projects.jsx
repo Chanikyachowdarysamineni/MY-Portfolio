@@ -13,6 +13,26 @@ const Projects = () => {
       github: 'https://github.com/Chanikyachowdarysamineni',
       live: 'https://vignanmahotsav.in/',
       icons: [FaReact, FaNodeJs, SiMongodb, SiExpress, SiSocketdotio, SiFirebase]
+    },
+    {
+      title: 'Safe Chat AI',
+      description: 'An intelligent chat application with AI-powered features, ensuring secure and private conversations. Leverages modern AI technologies for enhanced user experience and safety.',
+      tags: ['React', 'AI', 'Tailwind CSS', 'Firebase', 'Real-time Chat'],
+      image: '🤖',
+      gradient: 'from-cyan-500 to-blue-500',
+      github: 'https://github.com/Chanikyachowdarysamineni/Safe-Chat-AI.git',
+      live: 'https://safe-chat-ai.netlify.app/',
+      icons: [FaReact, SiTailwindcss, SiFirebase]
+    },
+    {
+      title: 'CSE-HUB',
+      description: 'A comprehensive notification dashboard application designed for CSE students and faculty. Streamlines communication with real-time updates, announcements, and event notifications.',
+      tags: ['React', 'Dashboard', 'Notifications', 'Real-time'],
+      image: '📊',
+      gradient: 'from-green-500 to-teal-500',
+      github: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
+      live: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
+      icons: [FaReact, FaDatabase]
     }
   ]
 
