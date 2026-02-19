@@ -1,5 +1,193 @@
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
+import { useState } from 'react'
+
+const ProjectCard = ({ project, index }) => {
+  const [isHovered, setIsHovered] = useState(false)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const rotateX = useTransform(y, [-100, 100], [15, -15])
+  const rotateY = useTransform(x, [-100, 100], [-15, 15])
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    x.set(event.clientX - centerX)
+    y.set(event.clientY - centerY)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+    setIsHovered(false)
+  }
+
+  return (
+    <motion.div
+      variants={{
+        hidden: { y: 50, opacity: 0 },
+        visible: {
+          y: 0,
+          opacity: 1,
+          transition: {
+            duration: 0.6,
+            ease: 'easeOut',
+          },
+        },
+      }}
+      whileHover={{ 
+        y: -15,
+        transition: { duration: 0.3 }
+      }}
+      className="group relative"
+      style={{ perspective: '1000px' }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: 'preserve-3d',
+        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="relative bg-white/5 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 shadow-2xl hover:shadow-cosmic-purple/30"
+      >
+        {/* Animated gradient border */}
+        <motion.div
+          className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient}`}
+          animate={isHovered ? { scaleX: [1, 1.2, 1] } : {}}
+          transition={{ duration: 1, repeat: isHovered ? Infinity : 0 }}
+        />
+
+        {/* Shine effect on hover */}
+        <motion.div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+          animate={isHovered ? { x: ['-100%', '100%'] } : {}}
+          transition={{ duration: 1.5, ease: 'easeInOut' }}
+          style={{
+            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
+            transform: 'skewX(-20deg)',
+          }}
+        />
+
+        {/* Content */}
+        <div className="p-6 relative" style={{ transform: 'translateZ(20px)' }}>
+          {/* Title with icon */}
+          <div className="flex items-start justify-between mb-4">
+            <motion.h3
+              className="text-xl font-bold text-white group-hover:text-cosmic-purple transition-colors flex-1"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              {project.title}
+            </motion.h3>
+            
+            {/* Floating indicator */}
+            <motion.div
+              animate={{
+                y: [0, -5, 0],
+                rotate: [0, 10, -10, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+              className="text-2xl opacity-70 group-hover:opacity-100 transition-opacity"
+            >
+              🚀
+            </motion.div>
+          </div>
+
+          {/* Technologies */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {project.tags.map((tag, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 + i * 0.05 }}
+                whileHover={{ scale: 1.1, y: -2 }}
+                className="px-3 py-1.5 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium backdrop-blur-sm hover:bg-cosmic-purple/20 hover:border-cosmic-purple/50 transition-all cursor-default"
+                style={{ transform: 'translateZ(10px)' }}
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </div>
+
+          {/* Links */}
+          <div className="flex gap-3" style={{ transform: 'translateZ(30px)' }}>
+            <motion.a
+              whileHover={{ scale: 1.05, x: -3 }}
+              whileTap={{ scale: 0.95 }}
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-800/80 hover:bg-gray-700 text-white rounded-xl transition-all backdrop-blur-sm text-sm font-medium group/btn relative overflow-hidden"
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: '100%' }}
+                transition={{ duration: 0.5 }}
+              />
+              <FaGithub className="group-hover/btn:rotate-12 transition-transform" />
+              <span>GitHub</span>
+            </motion.a>
+            <motion.a
+              whileHover={{ scale: 1.05, x: 3 }}
+              whileTap={{ scale: 0.95 }}
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-xl hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm font-medium relative overflow-hidden group/btn"
+            >
+              <motion.div
+                animate={{
+                  x: ['-100%', '100%'],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                style={{ transform: 'skewX(-20deg)' }}
+              />
+              <FaExternalLinkAlt className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform relative z-10" />
+              <span className="relative z-10">Live Demo</span>
+            </motion.a>
+          </div>
+        </div>
+
+        {/* Hover gradient glow */}
+        <motion.div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+          style={{
+            background: `radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 70%)`,
+          }}
+        />
+
+        {/* 3D depth layers */}
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            className="absolute inset-2 border border-white/5 rounded-xl"
+            style={{ transform: 'translateZ(-10px)' }}
+          />
+          <motion.div
+            className="absolute inset-4 border border-white/5 rounded-lg"
+            style={{ transform: 'translateZ(-20px)' }}
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
 
 const Projects = () => {
   const projects = [
@@ -107,97 +295,46 @@ const Projects = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
         >
           {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{ 
-                y: -10,
-                transition: { duration: 0.3 }
-              }}
-              className="group relative"
-            >
-              {/* Card */}
-              <div className="relative bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 hover:border-cosmic-purple/50 transition-all duration-300 shadow-lg hover:shadow-cosmic-purple/20">
-                {/* Gradient Overlay */}
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient}`} />
-
-                {/* Content */}
-                <div className="p-4 flex flex-col">
-                  {/* Title */}
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover:text-cosmic-purple transition-colors">
-                    {project.title}
-                  </h3>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex gap-3">
-                    <motion.a
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm"
-                    >
-                      <FaGithub />
-                      <span>GitHub</span>
-                    </motion.a>
-                    <motion.a
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm"
-                    >
-                      <FaExternalLinkAlt />
-                      <span>Live</span>
-                    </motion.a>
-                  </div>
-                </div>
-
-                {/* Hover glow effect */}
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15), transparent 70%)`,
-                  }}
-                />
-              </div>
-            </motion.div>
+            <ProjectCard key={index} project={project} index={index} />
           ))}
         </motion.div>
 
-        {/* View More */}
+        {/* View More with enhanced button */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          transition={{ delay: 0.5 }}
+          className="text-center mt-20"
         >
           <motion.a
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: '0 0 40px rgba(139, 92, 246, 0.5)',
+            }}
             whileTap={{ scale: 0.95 }}
             href="https://github.com/Chanikyachowdarysamineni"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 border-2 border-cosmic-purple text-cosmic-purple rounded-full font-semibold hover:bg-cosmic-purple/10 transition-all"
+            className="inline-flex items-center gap-3 px-10 py-4 border-2 border-cosmic-purple text-cosmic-purple rounded-full font-semibold hover:bg-cosmic-purple/10 transition-all relative overflow-hidden group backdrop-blur-sm"
           >
-            View All Projects on GitHub →
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-cosmic-purple/20 to-cosmic-cyan/20"
+              initial={{ x: '-100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+            <span className="relative z-10">View All Projects on GitHub</span>
+            <motion.span
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="relative z-10"
+            >
+              →
+            </motion.span>
           </motion.a>
         </motion.div>
       </div>

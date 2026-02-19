@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useTransform } from 'framer-motion'
+import { useState } from 'react'
 import {
   FaHtml5,
   FaCss3Alt,
@@ -23,6 +24,163 @@ import {
   SiNetlify,
 } from 'react-icons/si'
 import { TbApi } from 'react-icons/tb'
+
+const SkillCard = ({ skill, index }) => {
+  const [isHovered, setIsHovered] = useState(false)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const rotateX = useTransform(y, [-50, 50], [10, -10])
+  const rotateY = useTransform(x, [-50, 50], [-10, 10])
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    x.set(event.clientX - centerX)
+    y.set(event.clientY - centerY)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+    setIsHovered(false)
+  }
+
+  return (
+    <motion.div
+      variants={{
+        hidden: { scale: 0, opacity: 0 },
+        visible: {
+          scale: 1,
+          opacity: 1,
+          transition: {
+            type: 'spring',
+            stiffness: 200,
+            damping: 15,
+          },
+        },
+      }}
+      whileHover={{
+        scale: 1.15,
+        y: -10,
+        transition: { duration: 0.3 },
+      }}
+      whileTap={{ scale: 0.95 }}
+      className="group relative"
+      style={{ perspective: '1000px' }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: 'preserve-3d',
+        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 flex flex-col items-center gap-4 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-cosmic-purple/30"
+      >
+        {/* Icon with pulsing effect */}
+        <motion.div
+          className="text-5xl relative"
+          style={{ 
+            color: skill.color,
+            transform: 'translateZ(30px)'
+          }}
+          animate={isHovered ? {
+            scale: [1, 1.2, 1],
+            rotate: [0, 10, -10, 0],
+          } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <skill.icon />
+          
+          {/* Icon glow */}
+          <motion.div
+            className="absolute inset-0 blur-xl"
+            style={{ color: skill.color }}
+            animate={isHovered ? { opacity: [0.5, 0.8, 0.5] } : { opacity: 0 }}
+            transition={{ duration: 1, repeat: isHovered ? Infinity : 0 }}
+          >
+            <skill.icon />
+          </motion.div>
+        </motion.div>
+
+        {/* Name */}
+        <div className="text-center" style={{ transform: 'translateZ(20px)' }}>
+          <p className="text-white font-semibold text-sm group-hover:text-cosmic-purple transition-colors">
+            {skill.name}
+          </p>
+        </div>
+
+        {/* Particle effects */}
+        {isHovered && (
+          <>
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 rounded-full"
+                style={{ backgroundColor: skill.color }}
+                initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0, 1, 0],
+                  x: Math.cos(i * 120 * Math.PI / 180) * 50,
+                  y: Math.sin(i * 120 * Math.PI / 180) * 50,
+                }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                }}
+              />
+            ))}
+          </>
+        )}
+
+        {/* Glow effect on hover */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${skill.color}20, transparent 70%)`,
+          }}
+        />
+
+        {/* Glassmorphism shine */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          animate={isHovered ? { x: ['-200%', '200%'] } : {}}
+          transition={{ duration: 1.5, ease: 'easeInOut' }}
+          style={{
+            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+            transform: 'skewX(-20deg)',
+          }}
+        />
+        
+        {/* Animated border */}
+        <motion.div
+          animate={{
+            rotate: 360,
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: `conic-gradient(from 0deg, transparent, ${skill.color}50, transparent)`,
+          }}
+        />
+        
+        {/* 3D depth layer */}
+        <div className="absolute inset-2 border border-white/5 rounded-xl pointer-events-none" style={{ transform: 'translateZ(-10px)' }} />
+      </motion.div>
+    </motion.div>
+  )
+}
 
 const Skills = () => {
   const skillCategories = [
@@ -187,72 +345,10 @@ const Skills = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-50px" }}
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6"
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
               >
                 {category.skills.map((skill, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    whileHover={{
-                      scale: 1.15,
-                      rotate: [0, -5, 5, -5, 0],
-                      y: -10,
-                      transition: { duration: 0.5 },
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    className="group relative"
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
-                    <div className="relative bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 flex flex-col items-center gap-2 sm:gap-3 md:gap-4 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-cosmic-purple/20">
-                      {/* Icon */}
-                      <motion.div
-                        className="text-3xl sm:text-4xl md:text-5xl"
-                        style={{ color: skill.color }}
-                        whileHover={{ scale: 1.2 }}
-                      >
-                        <skill.icon />
-                      </motion.div>
-
-                      {/* Name */}
-                      <div className="text-center">
-                        <p className="text-white font-semibold text-xs sm:text-sm group-hover:text-cosmic-purple transition-colors">
-                          {skill.name}
-                        </p>
-                      </div>
-
-                      {/* Glow effect on hover */}
-                      <motion.div
-                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                        style={{
-                          background: `radial-gradient(circle at 50% 50%, ${skill.color}20, transparent 70%)`,
-                        }}
-                      />
-
-                      {/* Glassmorphism shine */}
-                      <motion.div
-                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                        style={{
-                          background: `linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%)`,
-                        }}
-                      />
-                      
-                      {/* Animated border */}
-                      <motion.div
-                        animate={{
-                          rotate: 360,
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: 'linear',
-                        }}
-                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
-                        style={{
-                          background: `conic-gradient(from 0deg, transparent, ${skill.color}50, transparent)`,
-                        }}
-                      />
-                    </div>
-                  </motion.div>
+                  <SkillCard key={index} skill={skill} index={index} />
                 ))}
               </motion.div>
             </motion.div>

@@ -1,26 +1,45 @@
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Projects from './components/Projects'
 import Publications from './components/Publications'
 import Skills from './components/Skills'
 import CosmicBackground from './components/CosmicBackground'
+import MagneticCursor from './components/MagneticCursor'
+import LoadingScreen from './components/LoadingScreen'
 import './App.css'
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
+
   useEffect(() => {
     // Smooth scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth'
   }, [])
 
   return (
-    <div className="relative min-h-screen bg-cosmic-dark text-white overflow-x-hidden">
-      {/* Animated Background */}
-      <CosmicBackground />
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <LoadingScreen onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
 
-      {/* Main Content */}
-      <div className="relative z-10">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative min-h-screen bg-cosmic-dark text-white overflow-x-hidden"
+      >
+        {/* Custom Magnetic Cursor */}
+        <MagneticCursor />
+        
+        {/* Animated Background */}
+        <CosmicBackground />
+
+        {/* Main Content */}
+        <div className="relative z-10">
         <Navbar />
         <Home />
         <Projects />
@@ -70,7 +89,8 @@ function App() {
           </div>
         </footer>
       </div>
-    </div>
+      </motion.div>
+    </>
   )
 }
 
