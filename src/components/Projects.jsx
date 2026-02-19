@@ -18,6 +18,13 @@ const Projects = () => {
       live: 'https://safe-chat-ai.netlify.app/'
     },
     {
+      title: 'VCODE',
+      tags: ['React', 'Code Editor', 'Web Development', 'CSE'],
+      gradient: 'from-orange-500 to-red-500',
+      github: 'https://github.com/Chanikyachowdarysamineni/VCODE-CSE.git',
+      live: 'https://vcode-cse-1.onrender.com/'
+    },
+    {
       title: 'CSE-HUB',
       tags: ['React', 'Dashboard', 'Notifications', 'Real-time'],
       gradient: 'from-green-500 to-teal-500',
