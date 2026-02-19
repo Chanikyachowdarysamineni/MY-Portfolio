@@ -104,7 +104,7 @@ const Skills = () => {
   }
 
   return (
-    <section id="skills" className="min-h-screen py-20 px-6 relative">
+    <section id="skills" className="min-h-screen py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -129,7 +129,7 @@ const Skills = () => {
           />
           
           <motion.h2
-            className="text-5xl md:text-6xl font-bold mb-4 relative z-10"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative z-10"
             initial={{ scale: 0.5 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
@@ -141,7 +141,7 @@ const Skills = () => {
             </span>
           </motion.h2>
           <motion.p 
-            className="text-gray-400 text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-6 py-3 rounded-full inline-block"
+            className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-4 sm:px-6 py-2 sm:py-3 rounded-full inline-block"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
@@ -161,7 +161,7 @@ const Skills = () => {
               className="space-y-8"
             >
               {/* Category Title */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <motion.div
                   className={`h-1 flex-grow bg-gradient-to-r ${category.color} rounded-full`}
                   initial={{ scaleX: 0 }}
@@ -169,7 +169,7 @@ const Skills = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 />
-                <h3 className="text-2xl md:text-3xl font-bold text-white whitespace-nowrap">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white whitespace-nowrap px-2">
                   {category.title}
                 </h3>
                 <motion.div
@@ -187,7 +187,7 @@ const Skills = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-50px" }}
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6"
               >
                 {category.skills.map((skill, index) => (
                   <motion.div
@@ -203,10 +203,10 @@ const Skills = () => {
                     className="group relative"
                     style={{ transformStyle: 'preserve-3d' }}
                   >
-                    <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 flex flex-col items-center gap-4 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-cosmic-purple/20">
+                    <div className="relative bg-white/5 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 flex flex-col items-center gap-2 sm:gap-3 md:gap-4 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-cosmic-purple/20">
                       {/* Icon */}
                       <motion.div
-                        className="text-5xl"
+                        className="text-3xl sm:text-4xl md:text-5xl"
                         style={{ color: skill.color }}
                         whileHover={{ scale: 1.2 }}
                       >
@@ -215,7 +215,7 @@ const Skills = () => {
 
                       {/* Name */}
                       <div className="text-center">
-                        <p className="text-white font-semibold text-sm group-hover:text-cosmic-purple transition-colors">
+                        <p className="text-white font-semibold text-xs sm:text-sm group-hover:text-cosmic-purple transition-colors">
                           {skill.name}
                         </p>
                       </div>
@@ -265,12 +265,12 @@ const Skills = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-20 text-center"
+          className="mt-12 sm:mt-16 md:mt-20 text-center px-4"
         >
           <motion.div 
             whileHover={{ scale: 1.05, y: -5 }}
             transition={{ duration: 0.3 }}
-            className="inline-block relative bg-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-10 shadow-2xl hover:shadow-cosmic-purple/30 overflow-hidden"
+            className="inline-block relative bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl hover:shadow-cosmic-purple/30 overflow-hidden"
             style={{
               boxShadow: '0 8px 32px 0 rgba(139, 92, 246, 0.2)',
             }}
@@ -291,7 +291,7 @@ const Skills = () => {
                 backgroundSize: '200% 200%',
               }}
             />
-            <p className="text-gray-300 text-lg mb-6 relative z-10 font-medium">
+            <p className="text-gray-300 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 relative z-10 font-medium">
               Always learning and exploring new technologies to stay ahead in the ever-evolving world of web development.
             </p>
             <motion.div
@@ -304,7 +304,7 @@ const Skills = () => {
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="text-5xl relative z-10 filter drop-shadow-lg"
+              className="text-3xl sm:text-4xl md:text-5xl relative z-10 filter drop-shadow-lg"
             >
               📚 💻 🚀
             </motion.div>

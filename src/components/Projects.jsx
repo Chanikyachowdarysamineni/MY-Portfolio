@@ -59,7 +59,7 @@ const Projects = () => {
   }
 
   return (
-    <section id="projects" className="min-h-screen py-20 px-6 relative">
+    <section id="projects" className="min-h-screen py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -84,7 +84,7 @@ const Projects = () => {
           />
           
           <motion.h2
-            className="text-5xl md:text-6xl font-bold mb-4 relative z-10"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative z-10"
             initial={{ scale: 0.5 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
@@ -96,7 +96,7 @@ const Projects = () => {
             </span>
           </motion.h2>
           <motion.p 
-            className="text-gray-400 text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-6 py-3 rounded-full inline-block"
+            className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-4 sm:px-6 py-2 sm:py-3 rounded-full inline-block"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
@@ -110,7 +110,7 @@ const Projects = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
         >
           {projects.map((project, index) => (
             <motion.div
@@ -130,33 +130,33 @@ const Projects = () => {
                 <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${project.gradient}`} />
 
                 {/* Content */}
-                <div className="p-6 flex flex-col h-full">
+                <div className="p-4 sm:p-5 md:p-6 flex flex-col h-full">
                   {/* Icon/Emoji */}
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="text-6xl mb-4"
+                    className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4"
                   >
                     {project.image}
                   </motion.div>
 
                   {/* Title */}
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cosmic-purple transition-colors">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-cosmic-purple transition-colors">
                     {project.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-gray-400 mb-4 flex-grow leading-relaxed">
+                  <p className="text-gray-400 text-sm sm:text-base mb-3 sm:mb-4 flex-grow leading-relaxed">
                     {project.description}
                   </p>
 
                   {/* Tech Icons */}
-                  <div className="flex gap-3 mb-4">
+                  <div className="flex gap-2 sm:gap-3 mb-3 sm:mb-4">
                     {project.icons.map((Icon, i) => (
                       <motion.div
                         key={i}
                         whileHover={{ scale: 1.2, rotate: 360 }}
                         transition={{ duration: 0.3 }}
-                        className="text-cosmic-cyan text-xl"
+                        className="text-cosmic-cyan text-lg sm:text-xl"
                       >
                         <Icon />
                       </motion.div>
@@ -164,11 +164,11 @@ const Projects = () => {
                   </div>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
                     {project.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
+                        className="px-2 sm:px-3 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
                       >
                         {tag}
                       </span>
@@ -176,14 +176,14 @@ const Projects = () => {
                   </div>
 
                   {/* Links */}
-                  <div className="flex gap-4 mt-auto pt-4 border-t border-gray-800">
+                  <div className="flex gap-3 sm:gap-4 mt-auto pt-3 sm:pt-4 border-t border-gray-800">
                     <motion.a
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm sm:text-base"
                     >
                       <FaGithub />
                       <span>Code</span>
@@ -192,7 +192,7 @@ const Projects = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       href={project.live}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all"
+                      className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm sm:text-base"
                     >
                       <FaExternalLinkAlt />
                       <span>Live</span>

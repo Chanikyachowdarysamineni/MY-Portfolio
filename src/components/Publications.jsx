@@ -39,7 +39,7 @@ const Publications = () => {
   }
 
   return (
-    <section id="publications" className="min-h-screen py-20 px-6 relative">
+    <section id="publications" className="min-h-screen py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -64,7 +64,7 @@ const Publications = () => {
           />
           
           <motion.h2
-            className="text-5xl md:text-6xl font-bold mb-4 relative z-10"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative z-10"
             initial={{ scale: 0.5 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
@@ -76,7 +76,7 @@ const Publications = () => {
             </span>
           </motion.h2>
           <motion.p 
-            className="text-gray-400 text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-6 py-3 rounded-full inline-block"
+            className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-4 sm:px-6 py-2 sm:py-3 rounded-full inline-block"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
@@ -90,7 +90,7 @@ const Publications = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="space-y-8"
+          className="space-y-6 sm:space-y-8"
         >
           {publications.map((publication, index) => (
             <motion.div
@@ -109,13 +109,13 @@ const Publications = () => {
                 {/* Gradient Overlay */}
                 <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${publication.gradient}`} />
 
-                <div className="p-8 md:p-10">
-                  <div className="flex flex-col md:flex-row gap-6">
+                <div className="p-6 sm:p-8 md:p-10">
+                  <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
                     {/* Left Section - Icon */}
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 self-start md:self-auto">
                       <motion.div
                         whileHover={{ scale: 1.1, rotate: 5 }}
-                        className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20 rounded-2xl flex items-center justify-center text-5xl border border-cosmic-purple/30"
+                        className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl md:text-5xl border border-cosmic-purple/30"
                       >
                         {publication.icon}
                       </motion.div>
@@ -124,30 +124,30 @@ const Publications = () => {
                     {/* Right Section - Content */}
                     <div className="flex-grow space-y-4">
                       {/* Status Badge & Year */}
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="px-4 py-1.5 bg-green-500/20 border border-green-500/40 rounded-full text-green-400 text-sm font-semibold flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <span className="px-3 sm:px-4 py-1.5 bg-green-500/20 border border-green-500/40 rounded-full text-green-400 text-xs sm:text-sm font-semibold flex items-center gap-2">
                           <FaBook size={12} />
                           {publication.status}
                         </span>
-                        <span className="px-4 py-1.5 bg-cosmic-blue/20 border border-cosmic-blue/40 rounded-full text-cosmic-cyan text-sm font-semibold flex items-center gap-2">
+                        <span className="px-3 sm:px-4 py-1.5 bg-cosmic-blue/20 border border-cosmic-blue/40 rounded-full text-cosmic-cyan text-xs sm:text-sm font-semibold flex items-center gap-2">
                           <FaCalendarAlt size={12} />
                           {publication.year}
                         </span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cosmic-purple transition-colors leading-tight">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white group-hover:text-cosmic-purple transition-colors leading-tight">
                         {publication.title}
                       </h3>
 
                       {/* Conference */}
-                      <p className="text-cosmic-cyan font-semibold flex items-center gap-2">
+                      <p className="text-cosmic-cyan font-semibold flex items-center gap-2 text-sm sm:text-base">
                         <FaExternalLinkAlt size={14} />
                         {publication.conference}
                       </p>
 
                       {/* Description */}
-                      <p className="text-gray-400 leading-relaxed">
+                      <p className="text-gray-400 leading-relaxed text-sm sm:text-base">
                         {publication.description}
                       </p>
 
@@ -156,7 +156,7 @@ const Publications = () => {
                         {publication.tags.map((tag, i) => (
                           <span
                             key={i}
-                            className="px-3 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
+                            className="px-2 sm:px-3 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
                           >
                             {tag}
                           </span>
@@ -164,14 +164,14 @@ const Publications = () => {
                       </div>
 
                       {/* Action Button */}
-                      <div className="pt-4">
+                      <div className="pt-3 sm:pt-4">
                         <motion.a
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           href={publication.pdfLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all"
+                          className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm sm:text-base"
                         >
                           <FaFilePdf size={18} />
                           <span>View Paper</span>

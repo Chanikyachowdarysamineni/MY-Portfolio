@@ -28,7 +28,7 @@ function App() {
         <Skills />
         
         {/* Footer */}
-        <footer className="relative py-12 px-6 mt-20 border-t border-white/10 bg-white/5 backdrop-blur-xl">
+        <footer className="relative py-8 sm:py-10 md:py-12 px-4 sm:px-6 mt-12 sm:mt-16 md:mt-20 border-t border-white/10 bg-white/5 backdrop-blur-xl">
           <div className="max-w-7xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -38,14 +38,14 @@ function App() {
               className="space-y-4"
             >
               <motion.p 
-                className="text-gray-300 font-medium"
+                className="text-gray-300 font-medium text-sm sm:text-base"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
                 © 2026 Chanikya Chowdary Samineni. Built with React & Tailwind CSS
               </motion.p>
               <motion.p 
-                className="text-gray-400 text-sm flex items-center justify-center gap-2"
+                className="text-gray-400 text-xs sm:text-sm flex items-center justify-center gap-2 flex-wrap"
                 animate={{
                   opacity: [0.5, 1, 0.5],
                 }}

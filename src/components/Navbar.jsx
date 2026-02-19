@@ -38,19 +38,19 @@ const Navbar = () => {
           : {}
       }
     >
-      <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="text-2xl font-bold bg-gradient-to-r from-cosmic-purple to-cosmic-cyan bg-clip-text text-transparent cursor-pointer"
+            className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cosmic-purple to-cosmic-cyan bg-clip-text text-transparent cursor-pointer"
             onClick={() => scrollToSection('home')}
           >
             Chanikay's portfolio
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
             {['Home', 'Projects', 'Publications', 'Skills'].map((item) => (
               <motion.button
                 key={item}
@@ -64,7 +64,7 @@ const Navbar = () => {
             ))}
             
             {/* Social Icons */}
-            <div className="flex items-center space-x-4 ml-4">
+            <div className="flex items-center space-x-3 lg:space-x-4 ml-4">
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 href="https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
@@ -72,7 +72,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="text-gray-200 hover:text-cosmic-cyan transition-colors"
               >
-                <FaLinkedin size={20} />
+                <FaLinkedin size={18} className="md:w-5 md:h-5" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: -5 }}
@@ -81,7 +81,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="text-gray-200 hover:text-cosmic-purple transition-colors"
               >
-                <FaGithub size={20} />
+                <FaGithub size={18} className="md:w-5 md:h-5" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: 5 }}
@@ -90,14 +90,14 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="text-gray-200 hover:text-yellow-500 transition-colors"
               >
-                <SiLeetcode size={20} />
+                <SiLeetcode size={18} className="md:w-5 md:h-5" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2, rotate: -5 }}
                 href="mailto:chanikyachowdary86@gmail.com"
                 className="text-gray-200 hover:text-cosmic-blue transition-colors"
               >
-                <FaEnvelope size={20} />
+                <FaEnvelope size={18} className="md:w-5 md:h-5" />
               </motion.a>
             </div>
 
@@ -107,7 +107,7 @@ const Navbar = () => {
               href="/Chanikya_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all"
+              className="hidden md:block px-4 lg:px-6 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm lg:text-base"
             >
               Resume
             </motion.a>
@@ -115,7 +115,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white text-2xl"
+            className="md:hidden text-white text-xl sm:text-2xl"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
@@ -128,19 +128,19 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden mt-4 pb-4 space-y-4"
+            className="md:hidden mt-3 sm:mt-4 pb-3 sm:pb-4 space-y-3 sm:space-y-4"
           >
             {['Home', 'Projects', 'Publications', 'Skills'].map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className="block w-full text-left text-gray-200 hover:text-cosmic-purple transition-colors font-medium py-2"
+                className="block w-full text-left text-gray-200 hover:text-cosmic-purple transition-colors font-medium py-2 text-sm sm:text-base"
               >
                 {item}
               </button>
             ))}
             
-            <div className="flex items-center space-x-6 pt-4">
+            <div className="flex items-center space-x-4 sm:space-x-6 pt-3 sm:pt-4">
               <a
                 href="https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                 target="_blank"
@@ -177,7 +177,7 @@ const Navbar = () => {
               href="/Chanikya_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full px-6 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold mt-4 text-center"
+              className="block w-full px-4 sm:px-6 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold mt-3 sm:mt-4 text-center text-sm sm:text-base"
             >
               Resume
             </a>

@@ -28,9 +28,9 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center px-6 pt-20"
+      className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-20 pb-16"
     >
-      <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         {/* Left Content */}
         <motion.div
           variants={containerVariants}
@@ -46,7 +46,7 @@ const Home = () => {
 
           <motion.h1
             variants={itemVariants}
-            className="text-5xl md:text-7xl font-bold text-white leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight"
           >
             Hi, I'm{' '}
             <span className="bg-gradient-to-r from-cosmic-purple via-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
@@ -54,12 +54,12 @@ const Home = () => {
             </span>
           </motion.h1>
 
-          <motion.p variants={itemVariants} className="text-xl text-gray-300 leading-relaxed">
+          <motion.p variants={itemVariants} className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
             A <span className="text-cosmic-cyan font-semibold">Full Stack Web Developer</span> who is passionate about
             creating beautiful, functional and responsive websites.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-4">
             <motion.a
               whileHover={{ 
                 scale: 1.08,
@@ -67,7 +67,7 @@ const Home = () => {
               }}
               whileTap={{ scale: 0.95 }}
               href="#projects"
-              className="group relative px-8 py-4 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold flex items-center gap-2 overflow-hidden shadow-lg shadow-cosmic-purple/30 backdrop-blur-sm"
+              className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold flex items-center justify-center gap-2 overflow-hidden shadow-lg shadow-cosmic-purple/30 backdrop-blur-sm text-sm sm:text-base w-full sm:w-auto"
               style={{
                 boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)',
               }}
@@ -99,7 +99,7 @@ const Home = () => {
               }}
               whileTap={{ scale: 0.95 }}
               href="mailto:chanikyachowdary86@gmail.com"
-              className="relative px-8 py-4 border-2 border-cosmic-purple text-cosmic-purple rounded-full font-semibold backdrop-blur-sm bg-white/5 transition-all flex items-center gap-2 overflow-hidden"
+              className="relative px-6 sm:px-8 py-3 sm:py-4 border-2 border-cosmic-purple text-cosmic-purple rounded-full font-semibold backdrop-blur-sm bg-white/5 transition-all flex items-center justify-center gap-2 overflow-hidden text-sm sm:text-base w-full sm:w-auto">
             >
               {/* Animated border glow */}
               <motion.div
@@ -123,7 +123,7 @@ const Home = () => {
 
           <motion.div
             variants={itemVariants}
-            className="flex gap-6 pt-6 text-gray-400"
+            className="flex flex-wrap gap-3 sm:gap-6 pt-6 text-gray-400"
           >
             {[
               { value: '5+', label: 'Technologies', delay: 0 },
@@ -140,15 +140,15 @@ const Home = () => {
                   y: -5,
                   transition: { duration: 0.2 }
                 }}
-                className={`${index > 0 ? 'border-l border-white/10 pl-6' : ''} backdrop-blur-sm bg-white/5 px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer group`}
+                className={`${index > 0 ? 'sm:border-l border-white/10 sm:pl-6' : ''} backdrop-blur-sm bg-white/5 px-3 sm:px-4 py-2 sm:py-3 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer group flex-1 min-w-[80px]`}
               >
                 <motion.div 
-                  className="text-3xl font-bold text-white group-hover:text-cosmic-purple transition-colors"
+                  className="text-2xl sm:text-3xl font-bold text-white group-hover:text-cosmic-purple transition-colors"
                   whileHover={{ scale: 1.2 }}
                 >
                   {stat.value}
                 </motion.div>
-                <div className="text-sm group-hover:text-gray-300 transition-colors">{stat.label}</div>
+                <div className="text-xs sm:text-sm group-hover:text-gray-300 transition-colors">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -159,7 +159,7 @@ const Home = () => {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: 'easeOut' }}
-          className="relative hidden md:flex justify-center items-center"
+          className="relative flex justify-center items-center mt-8 md:mt-0"
         >
           <motion.div
             animate={{
@@ -170,7 +170,7 @@ const Home = () => {
               repeat: Infinity,
               ease: 'easeInOut',
             }}
-            className="relative w-96 h-96"
+            className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96"
           >
             {/* Outer glow circle */}
             <motion.div
@@ -207,7 +207,7 @@ const Home = () => {
                   repeat: Infinity,
                   ease: 'linear',
                 }}
-                className="absolute w-96 h-96 rounded-full border-2 border-dashed border-cosmic-purple/30"
+                className="absolute w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full border-2 border-dashed border-cosmic-purple/30"
               />
               
               {/* Middle rotating ring */}
@@ -220,11 +220,11 @@ const Home = () => {
                   repeat: Infinity,
                   ease: 'linear',
                 }}
-                className="absolute w-[360px] h-[360px] rounded-full border-2 border-dotted border-cosmic-cyan/30"
+                className="absolute w-60 h-60 sm:w-[300px] sm:h-[300px] md:w-[360px] md:h-[360px] rounded-full border-2 border-dotted border-cosmic-cyan/30"
               />
 
               <motion.div 
-                className="relative w-80 h-80 rounded-full overflow-hidden bg-white/5 backdrop-blur-xl border-4 border-white/30 shadow-2xl group cursor-pointer"
+                className="relative w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full overflow-hidden bg-white/5 backdrop-blur-xl border-2 sm:border-4 border-white/30 shadow-2xl group cursor-pointer"
                 animate={{
                   boxShadow: [
                     '0 8px 32px 0 rgba(139, 92, 246, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)',
@@ -261,7 +261,7 @@ const Home = () => {
                 />
                 
                 {/* Fallback emoji */}
-                <div className="absolute inset-0 flex items-center justify-center text-9xl bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20" style={{ display: 'none' }}>
+                <div className="absolute inset-0 flex items-center justify-center text-6xl sm:text-8xl md:text-9xl bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20" style={{ display: 'none' }}>
                   🚀
                 </div>
                 
