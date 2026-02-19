@@ -1,38 +1,28 @@
 import { motion } from 'framer-motion'
-import { FaGithub, FaExternalLinkAlt, FaReact, FaNodeJs, FaDatabase } from 'react-icons/fa'
-import { SiMongodb, SiExpress, SiTailwindcss, SiFirebase, SiSocketdotio } from 'react-icons/si'
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 
 const Projects = () => {
   const projects = [
     {
       title: 'Mahotsav Portal',
-      description: 'A comprehensive event management platform featuring real-time updates, user authentication, and dynamic content management. Built with modern web technologies for optimal performance.',
       tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Socket.io', 'Firebase'],
-      image: '🎉',
       gradient: 'from-purple-500 to-pink-500',
       github: 'https://github.com/Chanikyachowdarysamineni',
-      live: 'https://vignanmahotsav.in/',
-      icons: [FaReact, FaNodeJs, SiMongodb, SiExpress, SiSocketdotio, SiFirebase]
+      live: 'https://vignanmahotsav.in/'
     },
     {
       title: 'Safe Chat AI',
-      description: 'An intelligent chat application with AI-powered features, ensuring secure and private conversations. Leverages modern AI technologies for enhanced user experience and safety.',
       tags: ['React', 'AI', 'Tailwind CSS', 'Firebase', 'Real-time Chat'],
-      image: '🤖',
       gradient: 'from-cyan-500 to-blue-500',
       github: 'https://github.com/Chanikyachowdarysamineni/Safe-Chat-AI.git',
-      live: 'https://safe-chat-ai.netlify.app/',
-      icons: [FaReact, SiTailwindcss, SiFirebase]
+      live: 'https://safe-chat-ai.netlify.app/'
     },
     {
       title: 'CSE-HUB',
-      description: 'A comprehensive notification dashboard application designed for CSE students and faculty. Streamlines communication with real-time updates, announcements, and event notifications.',
       tags: ['React', 'Dashboard', 'Notifications', 'Real-time'],
-      image: '📊',
       gradient: 'from-green-500 to-teal-500',
       github: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
-      live: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
-      icons: [FaReact, FaDatabase]
+      live: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git'
     }
   ]
 
@@ -110,65 +100,36 @@ const Projects = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
         >
           {projects.map((project, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
               whileHover={{ 
-                y: -15,
-                rotateZ: 2,
+                y: -10,
                 transition: { duration: 0.3 }
               }}
-              className="group relative perspective-1000"
-              style={{ transformStyle: 'preserve-3d' }}
+              className="group relative"
             >
               {/* Card */}
-              <div className="relative h-full bg-white/5 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 shadow-2xl hover:shadow-cosmic-purple/20">
+              <div className="relative bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 hover:border-cosmic-purple/50 transition-all duration-300 shadow-lg hover:shadow-cosmic-purple/20">
                 {/* Gradient Overlay */}
-                <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${project.gradient}`} />
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient}`} />
 
                 {/* Content */}
-                <div className="p-4 sm:p-5 md:p-6 flex flex-col h-full">
-                  {/* Icon/Emoji */}
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4"
-                  >
-                    {project.image}
-                  </motion.div>
-
+                <div className="p-4 flex flex-col">
                   {/* Title */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-cosmic-purple transition-colors">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover:text-cosmic-purple transition-colors">
                     {project.title}
                   </h3>
 
-                  {/* Description */}
-                  <p className="text-gray-400 text-sm sm:text-base mb-3 sm:mb-4 flex-grow leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Tech Icons */}
-                  <div className="flex gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    {project.icons.map((Icon, i) => (
-                      <motion.div
-                        key={i}
-                        whileHover={{ scale: 1.2, rotate: 360 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-cosmic-cyan text-lg sm:text-xl"
-                      >
-                        <Icon />
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="px-2 sm:px-3 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
+                        className="px-2 py-1 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium"
                       >
                         {tag}
                       </span>
@@ -176,23 +137,25 @@ const Projects = () => {
                   </div>
 
                   {/* Links */}
-                  <div className="flex gap-3 sm:gap-4 mt-auto pt-3 sm:pt-4 border-t border-gray-800">
+                  <div className="flex gap-3">
                     <motion.a
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm sm:text-base"
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm"
                     >
                       <FaGithub />
-                      <span>Code</span>
+                      <span>GitHub</span>
                     </motion.a>
                     <motion.a
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       href={project.live}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm sm:text-base"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-lg hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm"
                     >
                       <FaExternalLinkAlt />
                       <span>Live</span>
@@ -202,17 +165,9 @@ const Projects = () => {
 
                 {/* Hover glow effect */}
                 <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                   style={{
-                    background: `radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 70%)`,
-                  }}
-                />
-                
-                {/* Glassmorphism shine effect */}
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
+                    background: `radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15), transparent 70%)`,
                   }}
                 />
               </div>
