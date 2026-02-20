@@ -192,10 +192,10 @@ const ProjectCard = ({ project, index }) => {
 const Projects = () => {
   const projects = [
     {
-      title: 'Mahotsav Portal',
+      title: 'Mahotsav Website',
       tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Socket.io', 'Firebase'],
       gradient: 'from-purple-500 to-pink-500',
-      github: 'https://github.com/Chanikyachowdarysamineni',
+      github: 'https://github.com/Chanikyachowdarysamineni/Mahotsav-Website.git',
       live: 'https://vignanmahotsav.in/'
     },
     {
