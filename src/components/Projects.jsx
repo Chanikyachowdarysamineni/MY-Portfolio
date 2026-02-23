@@ -122,6 +122,7 @@ const ProjectCard = ({ project, index }) => {
 
           {/* Links */}
           <div className="flex gap-3" style={{ transform: 'translateZ(30px)' }}>
+            {project.github && (
             <motion.a
               whileHover={{ scale: 1.05, x: -3 }}
               whileTap={{ scale: 0.95 }}
@@ -139,13 +140,14 @@ const ProjectCard = ({ project, index }) => {
               <FaGithub className="group-hover/btn:rotate-12 transition-transform" />
               <span>GitHub</span>
             </motion.a>
+            )}
             <motion.a
               whileHover={{ scale: 1.05, x: 3 }}
               whileTap={{ scale: 0.95 }}
               href={project.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-xl hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm font-medium relative overflow-hidden group/btn"
+              className={`${project.github ? 'flex-1' : 'w-full'} flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-xl hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm font-medium relative overflow-hidden group/btn`}
             >
               <motion.div
                 animate={{
@@ -218,6 +220,12 @@ const Projects = () => {
       gradient: 'from-green-500 to-teal-500',
       github: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
       live: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git'
+    },
+    {
+      title: 'Electricity Inventory Management',
+      tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Inventory', 'Dashboard'],
+      gradient: 'from-yellow-500 to-orange-500',
+      live: 'https://electricity-inventory-management-ivm.onrender.com'
     }
   ]
 
