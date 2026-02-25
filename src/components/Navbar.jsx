@@ -1,263 +1,306 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes } from 'react-icons/fa'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaDownload } from 'react-icons/fa'
 import { SiLeetcode } from 'react-icons/si'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+
+  const navItems = ['Home', 'Projects', 'Publications', 'Skills']
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
+      const sections = ['home', 'projects', 'publications', 'skills']
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i])
+        if (el && window.scrollY >= el.offsetTop - 120) {
+          setActiveSection(sections[i])
+          break
+        }
+      }
     }
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const scrollToSection = (id) => {
-    const element = document.getElementById(id)
-    element?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     setIsMobileMenuOpen(false)
   }
 
+  const socialLinks = [
+    { href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, label: 'LinkedIn', color: '#0ea5e9' },
+    { href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, label: 'GitHub', color: '#a78bfa' },
+    { href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, label: 'LeetCode', color: '#f59e0b' },
+    { href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, label: 'Email', color: '#06b6d4' },
+  ]
+
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? 'bg-white/[0.02] backdrop-blur-2xl border-b border-white/10 shadow-2xl shadow-cosmic-purple/10' 
-          : 'bg-transparent'
-      }`}
-      style={
-        isScrolled
-          ? {
-              boxShadow: '0 8px 32px 0 rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(24px) saturate(180%)',
-            }
-          : {}
-      }
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-2' : 'py-4'}`}
     >
-      {/* Animated top border gradient */}
-      {isScrolled && (
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cosmic-purple to-transparent"
-        />
-      )}
+      {/* Glass background panel */}
+      <motion.div
+        animate={{ opacity: isScrolled ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0"
+        style={{
+          background: 'rgba(3, 4, 15, 0.75)',
+          backdropFilter: 'blur(28px) saturate(200%)',
+          borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
+          boxShadow: '0 4px 30px rgba(0,0,0,0.4), 0 0 60px rgba(139,92,246,0.04)',
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+      {/* Top accent line */}
+      <motion.div
+        animate={{ scaleX: isScrolled ? 1 : 0, opacity: isScrolled ? 1 : 0 }}
+        transition={{ duration: 0.4 }}
+        className="absolute top-0 left-0 right-0 h-[1px] origin-left"
+        style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6 30%, #06b6d4 70%, transparent)' }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between">
+
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative text-lg sm:text-xl md:text-2xl font-bold cursor-pointer group"
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => scrollToSection('home')}
+            className="relative group flex items-center gap-2"
           >
-            <span className="bg-gradient-to-r from-cosmic-purple via-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              className="w-7 h-7 rounded-full flex-shrink-0"
+              style={{
+                background: 'conic-gradient(from 0deg, #8b5cf6, #3b82f6, #06b6d4, #8b5cf6)',
+                padding: '1.5px',
+              }}
+            >
+              <div
+                className="w-full h-full rounded-full flex items-center justify-center font-bold text-white"
+                style={{ background: '#03040f', fontSize: '9px' }}
+              >
+                CC
+              </div>
+            </motion.div>
+            <span
+              className="text-base sm:text-lg font-bold tracking-tight"
+              style={{
+                background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
               Chanikya's Portfolio
             </span>
             <motion.div
-              className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan"
-              initial={{ width: 0 }}
-              whileHover={{ width: '100%' }}
-              transition={{ duration: 0.3 }}
+              className="absolute -bottom-1 left-0 h-px w-0 group-hover:w-full transition-all duration-300 origin-left"
+              style={{ background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)' }}
             />
-          </motion.div>
+          </motion.button>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
-            {['Home', 'Projects', 'Publications', 'Skills'].map((item, index) => (
-              <motion.button
-                key={item}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className="relative text-gray-200 hover:text-cosmic-purple transition-colors font-medium group"
-              >
-                {item}
-                <motion.div
-                  className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan"
-                  initial={{ width: 0 }}
-                  whileHover={{ width: '100%' }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.button>
-            ))}
-            
-            {/* Social Icons */}
-            <div className="flex items-center space-x-3 lg:space-x-4 ml-4">
-              <motion.a
-                whileHover={{ scale: 1.2, rotate: 5, y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                href="https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-200 hover:text-cosmic-cyan transition-colors relative group"
-              >
-                <FaLinkedin size={18} className="md:w-5 md:h-5" />
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-cosmic-cyan"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 2, opacity: 0.2 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.2, rotate: -5, y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                href="https://github.com/Chanikyachowdarysamineni"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-200 hover:text-cosmic-purple transition-colors relative group"
-              >
-                <FaGithub size={18} className="md:w-5 md:h-5" />
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-cosmic-purple"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 2, opacity: 0.2 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.2, rotate: 5, y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                href="https://leetcode.com/u/oO8MDDX40s/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-200 hover:text-yellow-500 transition-colors relative group"
-              >
-                <SiLeetcode size={18} className="md:w-5 md:h-5" />
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-yellow-500"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 2, opacity: 0.2 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.2, rotate: -5, y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                href="mailto:chanikyachowdary86@gmail.com"
-                className="text-gray-200 hover:text-cosmic-blue transition-colors relative group"
-              >
-                <FaEnvelope size={18} className="md:w-5 md:h-5" />
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-cosmic-blue"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 2, opacity: 0.2 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
+          {/* Desktop Nav Links */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItems.map((item, index) => {
+              const isActive = activeSection === item.toLowerCase()
+              return (
+                <motion.button
+                  key={item}
+                  initial={{ opacity: 0, y: -16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.08 + 0.2 }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => scrollToSection(item.toLowerCase())}
+                  className="relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                  style={{ color: isActive ? '#a78bfa' : '#94a3b8' }}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavBg"
+                      className="absolute inset-0 rounded-lg"
+                      style={{
+                        background: 'rgba(139,92,246,0.12)',
+                        border: '1px solid rgba(139,92,246,0.25)',
+                      }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavDot"
+                      className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                      style={{ background: '#8b5cf6' }}
+                    />
+                  )}
+                </motion.button>
+              )
+            })}
+          </div>
+
+          {/* Right side: social icons + resume */}
+          <div className="hidden md:flex items-center gap-3">
+            <div className="flex items-center gap-1 mr-2">
+              {socialLinks.map(({ href, Icon, label, color }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('mailto') ? undefined : '_blank'}
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.15, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="relative p-2 rounded-lg text-gray-500 transition-all duration-200 group"
+                  title={label}
+                >
+                  <motion.div
+                    className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    style={{ background: `${color}15` }}
+                  />
+                  <Icon size={16} style={{ position: 'relative', color: 'inherit' }} className="group-hover:text-white transition-colors" />
+                  <span
+                    className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                    style={{ background: 'rgba(15,15,30,0.9)', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.1)' }}
+                  >
+                    {label}
+                  </span>
+                </motion.a>
+              ))}
             </div>
 
+            {/* Resume button */}
             <motion.a
-              whileHover={{ 
-                scale: 1.05, 
-                boxShadow: '0 0 30px rgba(139, 92, 246, 0.6)',
-                y: -2
-              }}
-              whileTap={{ scale: 0.95 }}
               href="/Chanikya_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:block px-4 lg:px-6 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm lg:text-base relative overflow-hidden group"
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              className="relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #7c3aed, #2563eb)',
+                boxShadow: '0 4px 15px rgba(139,92,246,0.3)',
+              }}
             >
-              <motion.span
-                className="absolute inset-0 bg-gradient-to-r from-cosmic-cyan to-cosmic-purple"
-                initial={{ x: '-100%' }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
+              <motion.div
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)', transform: 'skewX(-15deg)' }}
               />
+              <FaDownload size={12} className="relative z-10" />
               <span className="relative z-10">Resume</span>
             </motion.a>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile hamburger */}
           <motion.button
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.9 }}
-            className="md:hidden text-white text-xl sm:text-2xl relative z-10"
+            className="md:hidden relative p-2 rounded-lg text-gray-400"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <motion.div
-              animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-            </motion.div>
+            <AnimatePresence mode="wait">
+              {isMobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FaTimes size={16} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="open"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FaBars size={16} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.button>
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden mt-3 sm:mt-4 pb-3 sm:pb-4 space-y-3 sm:space-y-4"
-          >
-            {['Home', 'Projects', 'Publications', 'Skills'].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className="block w-full text-left text-gray-200 hover:text-cosmic-purple transition-colors font-medium py-2 text-sm sm:text-base"
-              >
-                {item}
-              </button>
-            ))}
-            
-            <div className="flex items-center space-x-4 sm:space-x-6 pt-3 sm:pt-4">
-              <a
-                href="https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-200 hover:text-cosmic-cyan"
-              >
-                <FaLinkedin size={24} />
-              </a>
-              <a
-                href="https://github.com/Chanikyachowdarysamineni"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-200 hover:text-cosmic-purple"
-              >
-                <FaGithub size={24} />
-              </a>
-              <a
-                href="https://leetcode.com/u/oO8MDDX40s/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-200 hover:text-yellow-500"
-              >
-                <SiLeetcode size={24} />
-              </a>
-              <a
-                href="mailto:chanikyachowdary86@gmail.com"
-                className="text-gray-200 hover:text-cosmic-blue"
-              >
-                <FaEnvelope size={24} />
-              </a>
-            </div>
-
-            <a
-              href="/Chanikya_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full px-4 sm:px-6 py-2 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold mt-3 sm:mt-4 text-center text-sm sm:text-base"
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, y: -10 }}
+              animate={{ opacity: 1, height: 'auto', y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="md:hidden mt-3 overflow-hidden"
             >
-              Resume
-            </a>
-          </motion.div>
-        )}
+              <div
+                className="rounded-2xl p-4 space-y-1"
+                style={{
+                  background: 'rgba(10, 10, 25, 0.95)',
+                  border: '1px solid rgba(139,92,246,0.15)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.toLowerCase()
+                  return (
+                    <button
+                      key={item}
+                      onClick={() => scrollToSection(item.toLowerCase())}
+                      className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+                      style={{
+                        color: isActive ? '#a78bfa' : '#94a3b8',
+                        background: isActive ? 'rgba(139,92,246,0.1)' : 'transparent',
+                        border: isActive ? '1px solid rgba(139,92,246,0.2)' : '1px solid transparent',
+                      }}
+                    >
+                      {item}
+                    </button>
+                  )
+                })}
+
+                <div className="pt-3 border-t border-white/[0.06]">
+                  <div className="flex items-center gap-3 mb-3">
+                    {socialLinks.map(({ href, Icon, label }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target={href.startsWith('mailto') ? undefined : '_blank'}
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg text-gray-400 hover:text-white transition-colors"
+                        style={{ background: 'rgba(255,255,255,0.05)' }}
+                      >
+                        <Icon size={18} />
+                      </a>
+                    ))}
+                  </div>
+                  <a
+                    href="/Chanikya_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold text-white"
+                    style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
+                  >
+                    <FaDownload size={12} />
+                    Download Resume
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   )

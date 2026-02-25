@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { FaGithub, FaLinkedin, FaEnvelope, FaHeart, FaCoffee } from 'react-icons/fa'
+import { SiLeetcode } from 'react-icons/si'
 import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Projects from './components/Projects'
@@ -47,44 +49,102 @@ function App() {
         <Skills />
         
         {/* Footer */}
-        <footer className="relative py-8 sm:py-10 md:py-12 px-4 sm:px-6 mt-12 sm:mt-16 md:mt-20 border-t border-white/10 bg-white/5 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto text-center">
+        <footer className="relative px-4 sm:px-6 mt-12 sm:mt-16">
+          {/* Top divider with glow */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            whileInView={{ scaleX: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="h-px w-full"
+            style={{
+              background: 'linear-gradient(90deg, transparent 0%, rgba(139,92,246,0.6) 30%, rgba(6,182,212,0.6) 70%, transparent 100%)',
+              boxShadow: '0 0 20px rgba(139,92,246,0.3)',
+            }}
+          />
+
+          <div className="max-w-7xl mx-auto py-12 sm:py-16">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-4"
+              transition={{ duration: 0.7 }}
+              className="flex flex-col items-center gap-10"
             >
-              <motion.p 
-                className="text-gray-300 font-medium text-sm sm:text-base"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-              >
-                © 2026 Chanikya Chowdary Samineni. Built with React & Tailwind CSS
-              </motion.p>
-              <motion.p 
-                className="text-gray-400 text-xs sm:text-sm flex items-center justify-center gap-2 flex-wrap"
-                animate={{
-                  opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-              >
-                Designed with <span className="text-cosmic-purple text-xl">💜</span> and lots of <span className="text-xl">☕</span>
-              </motion.p>
-              
-              {/* Decorative line */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="h-0.5 bg-gradient-to-r from-transparent via-cosmic-purple to-transparent mx-auto max-w-xs"
-              />
+              {/* Name & tagline */}
+              <div className="text-center space-y-2">
+                <motion.p
+                  className="text-2xl sm:text-3xl font-black tracking-tight"
+                  style={{
+                    background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  Chanikya Chowdary Samineni
+                </motion.p>
+                <p className="text-gray-500 text-sm sm:text-base font-medium">
+                  Full Stack Developer | React Engineer | Open Source Enthusiast
+                </p>
+              </div>
+
+              {/* Tech stack used */}
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {[
+                  { label: 'React 18', color: '#61DAFB' },
+                  { label: 'Vite 5', color: '#646CFF' },
+                  { label: 'Tailwind CSS', color: '#06B6D4' },
+                  { label: 'Framer Motion', color: '#FF0055' },
+                  { label: 'Node.js', color: '#339933' },
+                ].map((tech) => (
+                  <motion.span
+                    key={tech.label}
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    className="tech-tag text-xs"
+                    style={{ borderColor: tech.color + '30', color: tech.color }}
+                  >
+                    {tech.label}
+                  </motion.span>
+                ))}
+              </div>
+
+              {/* Social links */}
+              <motion.div className="flex items-center gap-5">
+                {[
+                  { label: 'GitHub', href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, color: '#a78bfa' },
+                  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, color: '#0ea5e9' },
+                  { label: 'LeetCode', href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, color: '#f59e0b' },
+                  { label: 'Email', href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, color: '#06b6d4' },
+                ].map((link) => (
+                  <motion.a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="group flex items-center gap-1.5 text-gray-500 hover:text-gray-300 transition-colors text-xs sm:text-sm font-medium"
+                  >
+                    <link.Icon size={16} style={{ color: 'inherit' }} className="group-hover:text-current" />
+                    <span className="hidden sm:inline">{link.label}</span>
+                  </motion.a>
+                ))}
+              </motion.div>
+
+              {/* Bottom line */}
+              <div className="flex flex-col items-center gap-2 pt-2 border-t border-white/5 w-full">
+                <motion.p
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="flex items-center gap-2 text-gray-600 text-xs sm:text-sm font-mono text-center"
+                >
+                  Crafted with
+                  <FaHeart size={12} style={{ color: '#a78bfa' }} />
+                  and a lot of
+                  <FaCoffee size={12} style={{ color: '#f59e0b' }} />
+                  &mdash; Copyright {new Date().getFullYear()} All rights reserved
+                </motion.p>
+              </div>
             </motion.div>
           </div>
         </footer>

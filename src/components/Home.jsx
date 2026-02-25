@@ -1,389 +1,479 @@
-import { motion } from 'framer-motion'
-import { FaRocket, FaCode } from 'react-icons/fa'
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { FaRocket, FaCode, FaGithub, FaLinkedin, FaEnvelope, FaDownload } from 'react-icons/fa'
+import { SiLeetcode } from 'react-icons/si'
+import { useState, useEffect, useRef } from 'react'
+
+// Typewriter hook
+const useTypewriter = (words, speed = 80, deleteSpeed = 50, pause = 2000) => {
+  const [displayed, setDisplayed] = useState('')
+  const [wordIdx, setWordIdx] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    const current = words[wordIdx % words.length]
+    let timeout
+
+    if (!isDeleting && displayed === current) {
+      timeout = setTimeout(() => setIsDeleting(true), pause)
+    } else if (isDeleting && displayed === '') {
+      setIsDeleting(false)
+      setWordIdx((i) => (i + 1) % words.length)
+    } else {
+      timeout = setTimeout(() => {
+        setDisplayed(isDeleting ? current.slice(0, displayed.length - 1) : current.slice(0, displayed.length + 1))
+      }, isDeleting ? deleteSpeed : speed)
+    }
+    return () => clearTimeout(timeout)
+  }, [displayed, isDeleting, wordIdx, words, speed, deleteSpeed, pause])
+
+  return displayed
+}
+
+// Interactive tilt card
+const TiltCard = ({ children, className = '', style = {} }) => {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const rotX = useSpring(useTransform(y, [-100, 100], [8, -8]), { stiffness: 300, damping: 30 })
+  const rotY = useSpring(useTransform(x, [-100, 100], [-8, 8]), { stiffness: 300, damping: 30 })
+
+  const handleMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    x.set(e.clientX - rect.left - rect.width / 2)
+    y.set(e.clientY - rect.top - rect.height / 2)
+  }
+
+  return (
+    <motion.div
+      style={{ rotateX: rotX, rotateY: rotY, transformStyle: 'preserve-3d', ...style }}
+      onMouseMove={handleMove}
+      onMouseLeave={() => { x.set(0); y.set(0) }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+const StatCard = ({ value, label, icon, delay }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ delay, duration: 0.5, type: 'spring', stiffness: 200 }}
+    whileHover={{ y: -4, scale: 1.04 }}
+    className="flex-1 min-w-[90px] relative group cursor-default"
+  >
+    <div
+      className="relative rounded-2xl px-4 py-4 text-center overflow-hidden"
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+      }}
+    >
+      <motion.div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: 'radial-gradient(circle at 50% 120%, rgba(139,92,246,0.12), transparent 60%)' }}
+      />
+      <motion.div
+        className="text-2xl font-black mb-0.5 group-hover:text-cosmic-purple-light transition-colors"
+        style={{
+          background: 'linear-gradient(135deg, #a78bfa, #60a5fa)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+        whileHover={{ scale: 1.1 }}
+      >
+        {value}
+      </motion.div>
+      <div className="text-xs text-gray-500 font-medium">{label}</div>
+    </div>
+  </motion.div>
+)
 
 const Home = () => {
+  const roles = ['Full Stack Developer', 'React Developer', 'Node.js Engineer', 'Problem Solver', 'Open Source Enthusiast']
+  const typewriterText = useTypewriter(roles)
+
+  const socialLinks = [
+    { href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, label: 'GitHub', color: '#a78bfa' },
+    { href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, label: 'LinkedIn', color: '#60a5fa' },
+    { href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, label: 'LeetCode', color: '#f59e0b' },
+    { href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, label: 'Email', color: '#22d3ee' },
+  ]
+
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
   }
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
+    hidden: { y: 30, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
   }
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-20 pb-16"
+      className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-16 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-        {/* Left Content */}
+      {/* Section-level glow */}
+      <div
+        className="absolute top-1/3 left-0 w-[500px] h-[500px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%)' }}
+      />
+      <div
+        className="absolute bottom-1/4 right-0 w-[400px] h-[400px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 60%)' }}
+      />
+
+      <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        {/* ---- LEFT COLUMN ---- */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-6 z-10"
+          className="space-y-7 z-10"
         >
-          <motion.div variants={itemVariants} className="inline-block">
-            <span className="px-4 py-2 bg-cosmic-purple/20 border border-cosmic-purple/50 rounded-full text-cosmic-purple text-sm font-semibold">
-              👋 Welcome to my portfolio
-            </span>
-          </motion.div>
-
-          <motion.h1
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight"
-          >
-            Hi, I'm{' '}
-            <span className="bg-gradient-to-r from-cosmic-purple via-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
-              Chanikya!
-            </span>
-          </motion.h1>
-
-          <motion.p variants={itemVariants} className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
-            A <span className="text-cosmic-cyan font-semibold">Full Stack Web Developer</span> who is passionate about
-            creating beautiful, functional and responsive websites.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-4">
-            <motion.a
-              whileHover={{ 
-                scale: 1.08,
-                boxShadow: '0 0 40px rgba(139, 92, 246, 0.8), 0 0 80px rgba(139, 92, 246, 0.4)',
-              }}
-              whileTap={{ scale: 0.95 }}
-              href="#projects"
-              className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-full font-semibold flex items-center justify-center gap-2 overflow-hidden shadow-lg shadow-cosmic-purple/30 backdrop-blur-sm text-sm sm:text-base w-full sm:w-auto"
+          {/* Badge */}
+          <motion.div variants={itemVariants}>
+            <motion.span
+              whileHover={{ scale: 1.04 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
               style={{
-                boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)',
+                background: 'rgba(139,92,246,0.1)',
+                border: '1px solid rgba(139,92,246,0.3)',
+                color: '#a78bfa',
               }}
             >
-              {/* Shimmer effect */}
-              <motion.div
-                animate={{
-                  x: ['-100%', '100%'],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              <motion.span
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-2 h-2 rounded-full bg-emerald-400"
+                style={{ boxShadow: '0 0 8px #10b981' }}
+              />
+              Available for opportunities
+            </motion.span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.div variants={itemVariants} className="space-y-2">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05]">
+              <span className="text-white">Hi, I'm </span>
+              <span
                 style={{
-                  transform: 'skewX(-20deg)',
+                  background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  display: 'inline-block',
+                }}
+              >
+                Chanikya Chowdary Samineni
+              </span>
+            </h1>
+
+            {/* Typewriter */}
+            <div className="flex items-center gap-2 h-9 sm:h-10">
+              <span className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-400">
+                {typewriterText}
+              </span>
+              <span
+                className="inline-block w-[2px] h-6 sm:h-7 rounded-sm"
+                style={{
+                  background: '#8b5cf6',
+                  animation: 'blink 1s step-end infinite',
+                  boxShadow: '0 0 8px rgba(139,92,246,0.8)',
                 }}
               />
-              <FaRocket className="group-hover:animate-bounce relative z-10" />
+            </div>
+          </motion.div>
+
+          {/* Description */}
+          <motion.p
+            variants={itemVariants}
+            className="text-base sm:text-lg text-gray-400 leading-relaxed max-w-lg"
+          >
+            Crafting high-performance, visually stunning web experiences. Specialized in{' '}
+            <span className="text-cosmic-cyan font-semibold">React</span>,{' '}
+            <span className="text-cosmic-purple font-semibold">Node.js</span>, and modern full-stack architectures.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-3 pt-2">
+            {/* Primary CTA */}
+            <motion.a
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              href="#projects"
+              className="group relative flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm text-white overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #7c3aed, #2563eb, #0891b2)',
+                boxShadow: '0 8px 30px rgba(139,92,246,0.4), 0 0 0 1px rgba(139,92,246,0.2)',
+              }}
+            >
+              <motion.div
+                animate={{ x: ['-120%', '120%'] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0 w-full"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)', transform: 'skewX(-20deg)' }}
+              />
+              <FaRocket size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform relative z-10" />
               <span className="relative z-10">View My Work</span>
             </motion.a>
 
+            {/* Secondary CTA */}
             <motion.a
-              whileHover={{ 
-                scale: 1.08,
-                backgroundColor: 'rgba(139, 92, 246, 0.15)',
-                boxShadow: '0 0 30px rgba(139, 92, 246, 0.4)',
-              }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
               href="mailto:chanikyachowdary86@gmail.com"
-              className="relative px-6 sm:px-8 py-3 sm:py-4 border-2 border-cosmic-purple text-cosmic-purple rounded-full font-semibold backdrop-blur-sm bg-white/5 transition-all flex items-center justify-center gap-2 overflow-hidden text-sm sm:text-base w-full sm:w-auto">
+              className="group relative flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm overflow-hidden"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(139,92,246,0.3)',
+                color: '#a78bfa',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+              }}
             >
-              {/* Animated border glow */}
               <motion.div
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                style={{
-                  background: 'conic-gradient(from 0deg, transparent, rgba(139, 92, 246, 0.3), transparent)',
-                }}
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: 'rgba(139,92,246,0.08)' }}
               />
-              <FaCode className="relative z-10" />
+              <FaCode size={14} className="relative z-10" />
               <span className="relative z-10">Let's Connect</span>
+            </motion.a>
+
+            {/* Resume download */}
+            <motion.a
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              href="/Chanikya_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-gray-400 hover:text-white transition-colors"
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <FaDownload size={12} />
+              <span>Resume</span>
             </motion.a>
           </motion.div>
 
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap gap-3 sm:gap-6 pt-6 text-gray-400"
-          >
-            {[
-              { value: '5+', label: 'Technologies', delay: 0 },
-              { value: '10+', label: 'Projects', delay: 0.1 },
-              { value: '100%', label: 'Dedication', delay: 0.2 },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5 + stat.delay, duration: 0.5 }}
-                whileHover={{ 
-                  scale: 1.1, 
-                  y: -5,
-                  transition: { duration: 0.2 }
-                }}
-                className={`${index > 0 ? 'sm:border-l border-white/10 sm:pl-6' : ''} backdrop-blur-sm bg-white/5 px-3 sm:px-4 py-2 sm:py-3 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer group flex-1 min-w-[80px]`}
+          {/* Social links */}
+          <motion.div variants={itemVariants} className="flex items-center gap-2 pt-1">
+            <span className="text-xs text-gray-600 font-mono uppercase tracking-wider mr-1">Find me on</span>
+            {socialLinks.map(({ href, Icon, label, color }) => (
+              <motion.a
+                key={label}
+                href={href}
+                target={href.startsWith('mailto') ? undefined : '_blank'}
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, y: -3 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-2.5 rounded-xl text-gray-500 transition-all duration-200 group relative"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
+                title={label}
               >
-                <motion.div 
-                  className="text-2xl sm:text-3xl font-bold text-white group-hover:text-cosmic-purple transition-colors"
-                  whileHover={{ scale: 1.2 }}
-                >
-                  {stat.value}
-                </motion.div>
-                <div className="text-xs sm:text-sm group-hover:text-gray-300 transition-colors">{stat.label}</div>
-              </motion.div>
+                <motion.div
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  style={{ background: `${color}18` }}
+                />
+                <Icon size={16} className="relative z-10 group-hover:text-white transition-colors" />
+              </motion.a>
+            ))}
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div variants={itemVariants} className="flex gap-3 pt-2">
+            {[
+              { value: '15+', label: 'Technologies', delay: 1.4 },
+              { value: '10+', label: 'Projects', delay: 1.5 },
+              { value: '1', label: 'Publication', delay: 1.6 },
+              { value: '100%', label: 'Dedication', delay: 1.7 },
+            ].map((stat) => (
+              <StatCard key={stat.label} {...stat} />
             ))}
           </motion.div>
         </motion.div>
 
-        {/* Right Content - Profile Image with Animation */}
+        {/* ---- RIGHT COLUMN - Profile visual ---- */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-          className="relative flex justify-center items-center mt-8 md:mt-0"
+          initial={{ opacity: 0, scale: 0.8, x: 50 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          className="relative flex justify-center items-center"
         >
-          <motion.div
-            animate={{
-              y: [0, -20, 0],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96"
-          >
-            {/* Outer glow circle */}
+          <TiltCard className="relative" style={{ perspective: '800px' }}>
+            {/* Outer decorative ring */}
             <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3],
+              animate={{ rotate: 360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+              className="absolute inset-0 m-auto rounded-full"
+              style={{
+                width: 'calc(100% + 60px)',
+                height: 'calc(100% + 60px)',
+                top: '-30px',
+                left: '-30px',
+                border: '1px dashed rgba(139,92,246,0.2)',
               }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut',
+            />
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+              className="absolute inset-0 m-auto rounded-full"
+              style={{
+                width: 'calc(100% + 100px)',
+                height: 'calc(100% + 100px)',
+                top: '-50px',
+                left: '-50px',
+                border: '1px dotted rgba(6,182,212,0.15)',
               }}
-              className="absolute inset-0 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan rounded-full blur-3xl opacity-50"
             />
 
-            {/* Profile Image Container with Glassmorphism */}
+            {/* Glow blob behind image */}
             <motion.div
-              whileHover={{ 
-                scale: 1.1,
-                rotateZ: [0, -5, 5, 0],
-                transition: { duration: 0.5 }
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="absolute inset-0 flex items-center justify-center"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {/* Outer rotating ring */}
-              <motion.div
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full border-2 border-dashed border-cosmic-purple/30"
-              />
-              
-              {/* Middle rotating ring */}
-              <motion.div
-                animate={{
-                  rotate: -360,
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute w-60 h-60 sm:w-[300px] sm:h-[300px] md:w-[360px] md:h-[360px] rounded-full border-2 border-dotted border-cosmic-cyan/30"
-              />
+              animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute inset-0 rounded-full blur-3xl"
+              style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.4) 0%, rgba(6,182,212,0.2) 50%, transparent 70%)' }}
+            />
 
-              <motion.div 
-                className="relative w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full overflow-hidden bg-white/5 backdrop-blur-xl border-2 sm:border-4 border-white/30 shadow-2xl group cursor-pointer"
-                animate={{
-                  boxShadow: [
-                    '0 8px 32px 0 rgba(139, 92, 246, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)',
-                    '0 8px 48px 0 rgba(139, 92, 246, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.15)',
-                    '0 8px 32px 0 rgba(139, 92, 246, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)',
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                whileHover={{
-                  borderColor: 'rgba(139, 92, 246, 0.6)',
-                  shadow: '0 0 50px rgba(139, 92, 246, 0.8)',
-                }}
+            {/* Image container */}
+            <motion.div
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96"
+            >
+              {/* Conic gradient ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0 rounded-full"
+                style={{ padding: '3px', background: 'conic-gradient(from 0deg, #8b5cf6, #3b82f6, #06b6d4, #10b981, #8b5cf6)' }}
               >
-                {/* Profile Image with better fit */}
-                <motion.img 
-                  src="/profile.jpg" 
-                  alt="Chanikya Chowdary Samineni"
-                  className="w-full h-full object-cover object-center scale-110"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1.1 }}
-                  transition={{ duration: 1, ease: 'easeOut' }}
-                  whileHover={{ 
-                    scale: 1.15,
-                    transition: { duration: 0.3 }
-                  }}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                
-                {/* Fallback emoji */}
-                <div className="absolute inset-0 flex items-center justify-center text-6xl sm:text-8xl md:text-9xl bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20" style={{ display: 'none' }}>
-                  🚀
-                </div>
-                
-                {/* Animated gradient overlay on hover */}
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  animate={{
-                    background: [
-                      'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, transparent 50%, rgba(6, 182, 212, 0.2) 100%)',
-                      'linear-gradient(225deg, rgba(6, 182, 212, 0.2) 0%, transparent 50%, rgba(139, 92, 246, 0.2) 100%)',
-                      'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, transparent 50%, rgba(6, 182, 212, 0.2) 100%)',
-                    ],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  style={{
-                    backdropFilter: 'blur(2px)',
-                  }}
-                />
-                
-                {/* Multi-layer rotating border shine */}
-                <motion.div
-                  animate={{
-                    rotate: 360,
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: 'conic-gradient(from 0deg, transparent 0deg, rgba(139, 92, 246, 0.8) 90deg, transparent 180deg, rgba(6, 182, 212, 0.8) 270deg, transparent 360deg)',
-                  }}
-                />
-                
-                {/* Inner glow pulse */}
-                <motion.div
-                  animate={{
-                    opacity: [0.3, 0.6, 0.3],
-                    scale: [0.95, 1, 0.95],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  className="absolute inset-4 rounded-full border-2 border-white/20 pointer-events-none"
-                />
-                
-                {/* Shimmer effect */}
-                <motion.div
-                  animate={{
-                    x: ['-200%', '200%'],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                    repeatDelay: 1,
-                  }}
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-                    transform: 'skewX(-20deg)',
-                  }}
-                />
+                <div className="w-full h-full rounded-full" style={{ background: '#03040f' }} />
               </motion.div>
+
+              {/* Profile image */}
+              <div
+                className="absolute inset-[5px] rounded-full overflow-hidden"
+                style={{ boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)' }}
+              >
+                <motion.img
+                  src="/profile.jpg"
+                  alt="Chanikya Chowdary Samineni"
+                  className="w-full h-full object-cover object-center"
+                  style={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.4 }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                    e.currentTarget.nextElementSibling.style.display = 'flex'
+                  }}
+                />
+                {/* Fallback */}
+                <div
+                  className="absolute inset-0 items-center justify-center text-8xl"
+                  style={{
+                    display: 'none',
+                    background: 'linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2))',
+                  }}
+                >
+                  CS
+                </div>
+
+                {/* Hover gradient */}
+                <motion.div
+                  className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.3) 0%, transparent 50%, rgba(6,182,212,0.2) 100%)' }}
+                />
+              </div>
+
+              {/* Orbiting dots */}
+              {[
+                { color: '#8b5cf6', size: 10, radius: 55, speed: 10, startAngle: 0 },
+                { color: '#06b6d4', size: 8, radius: 55, speed: 14, startAngle: 120 },
+                { color: '#3b82f6', size: 6, radius: 55, speed: 18, startAngle: 240 },
+              ].map(({ color, size, speed, startAngle }, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
+                  style={{ transformOrigin: 'center' }}
+                >
+                  <div
+                    className="absolute rounded-full"
+                    style={{
+                      width: size,
+                      height: size,
+                      background: color,
+                      boxShadow: `0 0 ${size * 2}px ${color}`,
+                      top: '2%',
+                      left: '50%',
+                      transform: `translateX(-50%) rotate(${startAngle}deg)`,
+                    }}
+                  />
+                </motion.div>
+              ))}
             </motion.div>
 
-            {/* Orbiting elements */}
-            {[...Array(3)].map((_, i) => (
+            {/* Floating tech badges */}
+            <motion.div
+              animate={{ y: [0, -10, 0], x: [0, 5, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -left-6 top-1/4 px-3 py-2 rounded-xl text-xs font-mono font-bold text-white"
+              style={{
+                background: 'rgba(14,10,30,0.9)',
+                border: '1px solid rgba(139,92,246,0.4)',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+              }}
+            >
+              <span style={{ color: '#a78bfa' }}>const</span> <span className="text-white">dev</span> = <span style={{ color: '#22d3ee' }}>"chanikya"</span>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, 10, 0], x: [0, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              className="absolute -right-4 bottom-1/4 flex items-center gap-2 px-3 py-2 rounded-xl"
+              style={{
+                background: 'rgba(14,10,30,0.9)',
+                border: '1px solid rgba(6,182,212,0.4)',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+              }}
+            >
               <motion.div
-                key={i}
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  duration: 10 + i * 5,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute inset-0"
-                style={{
-                  transformOrigin: 'center',
-                }}
-              >
-                <motion.div
-                  whileHover={{ scale: 2 }}
-                  className={`absolute w-3 h-3 rounded-full backdrop-blur-md cursor-pointer ${
-                    i === 0 ? 'bg-cosmic-purple' : i === 1 ? 'bg-cosmic-cyan' : 'bg-cosmic-blue'
-                  }`}
-                  style={{
-                    top: `${20 + i * 15}%`,
-                    left: '50%',
-                    boxShadow: `0 0 30px ${
-                      i === 0 ? '#8b5cf6' : i === 1 ? '#06b6d4' : '#3b82f6'
-                    }, 0 0 60px ${i === 0 ? '#8b5cf6' : i === 1 ? '#06b6d4' : '#3b82f6'}`,
-                  }}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-2 h-2 rounded-full"
+                style={{ background: '#10b981', boxShadow: '0 0 8px #10b981' }}
+              />
+              <span className="text-xs font-bold text-gray-300">React + Node.js</span>
+            </motion.div>
+          </TiltCard>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+        transition={{ delay: 2.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
+        <span className="text-[10px] text-gray-600 font-mono tracking-widest uppercase">Scroll</span>
         <motion.div
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-cosmic-purple rounded-full flex justify-center pt-2"
+          className="w-5 h-8 rounded-full border border-gray-700 flex justify-center pt-1.5"
         >
-          <div className="w-1 h-3 bg-cosmic-purple rounded-full" />
+          <motion.div
+            animate={{ opacity: [1, 0, 1], height: ['30%', '60%', '30%'] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-0.5 rounded-full bg-cosmic-purple"
+          />
         </motion.div>
       </motion.div>
     </section>

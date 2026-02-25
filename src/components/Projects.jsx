@@ -1,119 +1,173 @@
-import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import {
+  FaGithub, FaExternalLinkAlt, FaArrowRight,
+  FaCalendarAlt, FaShieldAlt, FaTerminal, FaLayerGroup, FaBolt,
+} from 'react-icons/fa'
 import { useState } from 'react'
+
+const SectionHeader = ({ badge, title, subtitle }) => (
+  <motion.div
+    initial={{ opacity: 0, y: -30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    className="text-center mb-16 space-y-4"
+  >
+    <span className="section-badge">{badge}</span>
+    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
+      <span
+        style={{
+          background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundSize: '200% 200%',
+          animation: 'gradientXY 4s ease infinite',
+        }}
+      >
+        {title}
+      </span>
+    </h2>
+    <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto">{subtitle}</p>
+    <motion.div
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="h-px max-w-xs mx-auto"
+      style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), rgba(6,182,212,0.5), transparent)' }}
+    />
+  </motion.div>
+)
 
 const ProjectCard = ({ project, index }) => {
   const [isHovered, setIsHovered] = useState(false)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
+  const rotX = useSpring(useTransform(y, [-80, 80], [6, -6]), { stiffness: 200, damping: 25 })
+  const rotY = useSpring(useTransform(x, [-80, 80], [-6, 6]), { stiffness: 200, damping: 25 })
 
-  const rotateX = useTransform(y, [-100, 100], [15, -15])
-  const rotateY = useTransform(x, [-100, 100], [-15, 15])
-
-  const handleMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    x.set(event.clientX - centerX)
-    y.set(event.clientY - centerY)
-  }
-
-  const handleMouseLeave = () => {
-    x.set(0)
-    y.set(0)
-    setIsHovered(false)
+  const handleMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    x.set(e.clientX - rect.left - rect.width / 2)
+    y.set(e.clientY - rect.top - rect.height / 2)
   }
 
   return (
     <motion.div
       variants={{
-        hidden: { y: 50, opacity: 0 },
-        visible: {
-          y: 0,
-          opacity: 1,
-          transition: {
-            duration: 0.6,
-            ease: 'easeOut',
-          },
-        },
-      }}
-      whileHover={{ 
-        y: -15,
-        transition: { duration: 0.3 }
+        hidden: { y: 40, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
       }}
       className="group relative"
       style={{ perspective: '1000px' }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={handleMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={() => { x.set(0); y.set(0); setIsHovered(false) }}
     >
       <motion.div
+        style={{ rotateX: rotX, rotateY: rotY, transformStyle: 'preserve-3d' }}
+        className="relative rounded-2xl overflow-hidden h-full"
         style={{
-          rotateX,
-          rotateY,
+          rotateX: rotX,
+          rotateY: rotY,
           transformStyle: 'preserve-3d',
+          background: 'linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          boxShadow: isHovered
+            ? '0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.12)'
+            : '0 8px 32px rgba(0,0,0,0.3)',
+          transition: 'box-shadow 0.3s ease',
+          backdropFilter: 'blur(16px)',
         }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="relative bg-white/5 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-cosmic-purple/50 transition-all duration-500 shadow-2xl hover:shadow-cosmic-purple/30"
       >
-        {/* Animated gradient border */}
+        {/* Top gradient bar */}
         <motion.div
-          className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient}`}
-          animate={isHovered ? { scaleX: [1, 1.2, 1] } : {}}
-          transition={{ duration: 1, repeat: isHovered ? Infinity : 0 }}
+          className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${project.gradient}`}
+          animate={isHovered ? { opacity: [0.7, 1, 0.7] } : { opacity: 0.6 }}
         />
 
-        {/* Shine effect on hover */}
+        {/* Hover glow top */}
         <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
-          animate={isHovered ? { x: ['-100%', '100%'] } : {}}
-          transition={{ duration: 1.5, ease: 'easeInOut' }}
+          className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
+          animate={isHovered ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.3 }}
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
-            transform: 'skewX(-20deg)',
+            background: `linear-gradient(180deg, ${project.glowColor || 'rgba(139,92,246,0.08)'} 0%, transparent 100%)`,
           }}
         />
 
-        {/* Content */}
-        <div className="p-6 relative" style={{ transform: 'translateZ(20px)' }}>
-          {/* Title with icon */}
+        {/* Shimmer on hover */}
+        {isHovered && (
+          <motion.div
+            initial={{ x: '-100%' }}
+            animate={{ x: '200%' }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
+              transform: 'skewX(-15deg)',
+              zIndex: 1,
+            }}
+          />
+        )}
+
+        <div className="relative p-6 flex flex-col h-full" style={{ transform: 'translateZ(15px)' }}>
+          {/* Header row */}
           <div className="flex items-start justify-between mb-4">
-            <motion.h3
-              className="text-xl font-bold text-white group-hover:text-cosmic-purple transition-colors flex-1"
-              whileHover={{ x: 5 }}
-              transition={{ duration: 0.2 }}
+            {/* Project number */}
+            <span
+              className="text-xs font-mono font-bold px-2 py-1 rounded-md"
+              style={{
+                color: '#8b5cf6',
+                background: 'rgba(139,92,246,0.1)',
+                border: '1px solid rgba(139,92,246,0.2)',
+              }}
             >
-              {project.title}
-            </motion.h3>
-            
-            {/* Floating indicator */}
+              {String(index + 1).padStart(2, '0')}
+            </span>
+
+            {/* Floating icon */}
             <motion.div
-              animate={{
-                y: [0, -5, 0],
-                rotate: [0, 10, -10, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="text-2xl opacity-70 group-hover:opacity-100 transition-opacity"
+              animate={{ y: [0, -5, 0], rotate: isHovered ? [0, 10, 0] : 0 }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="opacity-60 group-hover:opacity-100 transition-opacity"
             >
-              🚀
+              <project.emoji size={22} />
             </motion.div>
           </div>
 
-          {/* Technologies */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          {/* Title */}
+          <motion.h3
+            className="text-xl font-bold text-white mb-3 group-hover:text-transparent transition-all duration-300"
+            style={
+              isHovered
+                ? {
+                    background: 'linear-gradient(135deg, #a78bfa, #60a5fa)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }
+                : {}
+            }
+          >
+            {project.title}
+          </motion.h3>
+
+          {/* Description */}
+          <p className="text-sm text-gray-500 leading-relaxed mb-5 flex-grow">
+            {project.description}
+          </p>
+
+          {/* Tech tags */}
+          <div className="flex flex-wrap gap-1.5 mb-5">
             {project.tags.map((tag, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, scale: 0 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 + i * 0.05 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="px-3 py-1.5 bg-cosmic-purple/10 border border-cosmic-purple/30 rounded-full text-cosmic-purple text-xs font-medium backdrop-blur-sm hover:bg-cosmic-purple/20 hover:border-cosmic-purple/50 transition-all cursor-default"
-                style={{ transform: 'translateZ(10px)' }}
+                transition={{ delay: index * 0.05 + i * 0.04 }}
+                whileHover={{ scale: 1.08, y: -1 }}
+                className="tech-tag"
+                style={{ transform: 'translateZ(8px)' }}
               >
                 {tag}
               </motion.span>
@@ -121,70 +175,51 @@ const ProjectCard = ({ project, index }) => {
           </div>
 
           {/* Links */}
-          <div className="flex gap-3" style={{ transform: 'translateZ(30px)' }}>
+          <div className="flex gap-2 mt-auto" style={{ transform: 'translateZ(25px)' }}>
             {project.github && (
-            <motion.a
-              whileHover={{ scale: 1.05, x: -3 }}
-              whileTap={{ scale: 0.95 }}
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-800/80 hover:bg-gray-700 text-white rounded-xl transition-all backdrop-blur-sm text-sm font-medium group/btn relative overflow-hidden"
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                initial={{ x: '-100%' }}
-                whileHover={{ x: '100%' }}
-                transition={{ duration: 0.5 }}
-              />
-              <FaGithub className="group-hover/btn:rotate-12 transition-transform" />
-              <span>GitHub</span>
-            </motion.a>
+              <motion.a
+                whileHover={{ scale: 1.04, x: -2 }}
+                whileTap={{ scale: 0.96 }}
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition-all relative overflow-hidden group/btn"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}
+              >
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover/btn:opacity-100"
+                  initial={false}
+                  style={{ background: 'rgba(255,255,255,0.05)' }}
+                />
+                <FaGithub size={13} className="relative z-10" />
+                <span className="relative z-10">Code</span>
+              </motion.a>
             )}
             <motion.a
-              whileHover={{ scale: 1.05, x: 3 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
               href={project.live}
               target="_blank"
               rel="noopener noreferrer"
-              className={`${project.github ? 'flex-1' : 'w-full'} flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white rounded-xl hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all text-sm font-medium relative overflow-hidden group/btn`}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white relative overflow-hidden group/btn`}
+              style={{
+                background: `linear-gradient(135deg, ${project.btnGradient || '#7c3aed, #2563eb'})`,
+                boxShadow: '0 4px 15px rgba(139,92,246,0.25)',
+              }}
             >
               <motion.div
-                animate={{
-                  x: ['-100%', '100%'],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                style={{ transform: 'skewX(-20deg)' }}
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)', transform: 'skewX(-15deg)' }}
               />
-              <FaExternalLinkAlt className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform relative z-10" />
+              <FaExternalLinkAlt size={11} className="relative z-10" />
               <span className="relative z-10">Live Demo</span>
             </motion.a>
           </div>
-        </div>
-
-        {/* Hover gradient glow */}
-        <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
-          style={{
-            background: `radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 70%)`,
-          }}
-        />
-
-        {/* 3D depth layers */}
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div
-            className="absolute inset-2 border border-white/5 rounded-xl"
-            style={{ transform: 'translateZ(-10px)' }}
-          />
-          <motion.div
-            className="absolute inset-4 border border-white/5 rounded-lg"
-            style={{ transform: 'translateZ(-20px)' }}
-          />
         </div>
       </motion.div>
     </motion.div>
@@ -195,153 +230,120 @@ const Projects = () => {
   const projects = [
     {
       title: 'Mahotsav Website',
+      description: 'A full-featured event management platform for college festivals with real-time ticketing, attendee management, and live event dashboards powered by Socket.io.',
       tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Socket.io', 'Firebase'],
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-violet-500 to-pink-500',
+      glowColor: 'rgba(139,92,246,0.1)',
+      btnGradient: '#7c3aed, #a21caf',
+      emoji: FaCalendarAlt,
       github: 'https://github.com/Chanikyachowdarysamineni/Mahotsav-Website.git',
-      live: 'https://vignanmahotsav.in/'
+      live: 'https://vignanmahotsav.in/',
     },
     {
       title: 'Safe Chat AI',
-      tags: ['React', 'AI', 'Tailwind CSS', 'Firebase', 'Real-time Chat'],
+      description: 'An AI-powered chat platform with real-time messaging, content moderation, and smart reply suggestions. Built with Firebase for instant sync across devices.',
+      tags: ['React', 'AI', 'Tailwind CSS', 'Firebase', 'Real-time'],
       gradient: 'from-cyan-500 to-blue-500',
+      glowColor: 'rgba(6,182,212,0.1)',
+      btnGradient: '#0891b2, #1d4ed8',
+      emoji: FaShieldAlt,
       github: 'https://github.com/Chanikyachowdarysamineni/Safe-Chat-AI.git',
-      live: 'https://safe-chat-ai.netlify.app/'
+      live: 'https://safe-chat-ai.netlify.app/',
     },
     {
       title: 'VCODE',
-      tags: ['React', 'Code Editor', 'Web Development', 'CSE'],
+      description: 'An online code editor built specifically for CS students with syntax highlighting, live preview, and a curated collection of programming exercises.',
+      tags: ['React', 'Code Editor', 'Monaco', 'Web Dev', 'CSE'],
       gradient: 'from-orange-500 to-red-500',
+      glowColor: 'rgba(249,115,22,0.1)',
+      btnGradient: '#c2410c, #b91c1c',
+      emoji: FaTerminal,
       github: 'https://github.com/Chanikyachowdarysamineni/VCODE-CSE.git',
-      live: 'https://vcode-cse-1.onrender.com/'
+      live: 'https://vcode-cse-1.onrender.com/',
     },
     {
       title: 'CSE-HUB',
-      tags: ['React', 'Dashboard', 'Notifications', 'Real-time'],
-      gradient: 'from-green-500 to-teal-500',
+      description: 'A comprehensive student hub for CS department featuring real-time notifications, resource sharing, event tracking, and academic dashboard.',
+      tags: ['React', 'Dashboard', 'Notifications', 'Real-time', 'UI/UX'],
+      gradient: 'from-emerald-500 to-teal-500',
+      glowColor: 'rgba(16,185,129,0.1)',
+      btnGradient: '#059669, #0f766e',
+      emoji: FaLayerGroup,
       github: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
-      live: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git'
+      live: 'https://github.com/Chanikyachowdarysamineni/CSE-HUB.git',
     },
     {
       title: 'Electricity Inventory Management',
-      tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Inventory', 'Dashboard'],
+      description: 'A MERN stack inventory management system for electrical components with stock tracking, analytics dashboards, and automated low-stock alerts.',
+      tags: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Dashboard'],
       gradient: 'from-yellow-500 to-orange-500',
-      live: 'https://electricity-inventory-management-ivm.onrender.com'
-    }
+      glowColor: 'rgba(245,158,11,0.1)',
+      btnGradient: '#b45309, #c2410c',
+      emoji: FaBolt,
+      live: 'https://electricity-inventory-management-ivm.onrender.com',
+    },
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
-    },
-  }
-
   return (
-    <section id="projects" className="min-h-screen py-12 sm:py-16 md:py-20 px-4 sm:px-6 relative">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16 relative"
-        >
-          {/* Decorative glass orb */}
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: 'linear',
-            }}
-            className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20 rounded-full blur-3xl"
-          />
-          
-          <motion.h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative z-10"
-            initial={{ scale: 0.5 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
-            <span className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan bg-clip-text text-transparent drop-shadow-lg">
-              Featured Projects
-            </span>
-          </motion.h2>
-          <motion.p 
-            className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto backdrop-blur-sm bg-white/5 px-4 sm:px-6 py-2 sm:py-3 rounded-full inline-block"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            Showcasing my recent work and creative solutions
-          </motion.p>
-        </motion.div>
+    <section id="projects" className="min-h-screen py-16 sm:py-24 px-4 sm:px-6 relative">
+      {/* Background decoration */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(139,92,246,0.04) 0%, transparent 60%)' }}
+      />
 
-        {/* Projects Grid */}
+      <div className="max-w-7xl mx-auto">
+        <SectionHeader
+          badge="[ Featured Projects ]"
+          title="Things I've Built"
+          subtitle="A curated selection of projects that showcase my skills and passion for building impactful software."
+        />
+
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ staggerChildren: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
         >
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} index={index} />
           ))}
         </motion.div>
 
-        {/* View More with enhanced button */}
+        {/* View all */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-20"
+          transition={{ delay: 0.4 }}
+          className="text-center mt-16"
         >
           <motion.a
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: '0 0 40px rgba(139, 92, 246, 0.5)',
-            }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
             href="https://github.com/Chanikyachowdarysamineni"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-4 border-2 border-cosmic-purple text-cosmic-purple rounded-full font-semibold hover:bg-cosmic-purple/10 transition-all relative overflow-hidden group backdrop-blur-sm"
+            className="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl font-semibold text-sm relative overflow-hidden group"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(139,92,246,0.3)',
+              color: '#a78bfa',
+            }}
           >
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-cosmic-purple/20 to-cosmic-cyan/20"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ background: 'rgba(139,92,246,0.07)' }}
             />
+            <FaGithub size={16} className="relative z-10" />
             <span className="relative z-10">View All Projects on GitHub</span>
             <motion.span
-              animate={{ x: [0, 5, 0] }}
+              animate={{ x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
               className="relative z-10"
             >
-              →
+              <FaArrowRight size={12} />
             </motion.span>
           </motion.a>
         </motion.div>
