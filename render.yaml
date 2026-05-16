@@ -5,11 +5,11 @@ services:
     plan: free
     rootDir: server
     startCommand: npm start
-    buildCommand: npm install
     nodeVersion: 24
-    # Environment variables configured in Render dashboard
-    # Do not commit sensitive data here
+    # Do NOT specify buildCommand here - Render will auto-detect
+    # render.yaml will work if used via blueprint deploy
+    # For manual service creation, Render uses default build
     envVars:
       - key: NODE_ENV
         value: production
-      # MONGO_URI and PORT should be set in Render dashboard environment variables
+      # MONGO_URI and PORT should be set in Render dashboard
