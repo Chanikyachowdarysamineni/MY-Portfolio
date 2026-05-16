@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "echo 'Frontend build skipped - deploying backend only' && cd server && npm install",
-    "start": "cd server && npm start",
+    "build": "vite build",
+    "start": "vite preview",
     "preview": "vite preview"
   },
   "dependencies": {

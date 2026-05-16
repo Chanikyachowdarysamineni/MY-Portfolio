@@ -5,12 +5,11 @@ services:
     plan: free
     rootDir: server
     startCommand: npm start
-    # Using Procfile + package.json for deployment
-    # Build process: npm install (root) -> npm run build (installs server deps) -> npm start (runs backend)
+    buildCommand: npm install
+    nodeVersion: 24
+    # Environment variables configured in Render dashboard
+    # Do not commit sensitive data here
     envVars:
-      - key: PORT
-        value: 10000
-      - key: MONGO_URI
-        value: mongodb+srv://raavanaasura87_db_user:Chani8877@chani.irvyksk.mongodb.net/portfolio?retryWrites=true&w=majority
       - key: NODE_ENV
         value: production
+      # MONGO_URI and PORT should be set in Render dashboard environment variables
