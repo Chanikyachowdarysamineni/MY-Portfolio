@@ -99,6 +99,88 @@ Health check endpoint
 ### 1. Update Backend URL
 In your frontend `.env` file:
 ```
+VITE_BACKEND_URL=https://portfolio-backend-xxxxx.onrender.com
+```
+
+## Deployment
+
+### Deploy to Render
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Backend deployment configuration"
+   git push origin main
+   ```
+
+2. **Create Render Service**
+   - Go to [render.com](https://render.com)
+   - Sign in with GitHub
+   - Click **"New +"** → **"Web Service"**
+   - Connect your repository
+   - Configure:
+     - **Name**: `portfolio-backend`
+     - **Environment**: Node
+     - **Build Command**: `npm install`
+     - **Start Command**: `npm start`
+     - **Plan**: Free
+
+3. **Add Environment Variables**
+   - Go to **Settings** → **Environment**
+   - Add:
+     ```
+     MONGO_URI=mongodb+srv://raavanaasura87_db_user:Chani8877@chani.irvyksk.mongodb.net/portfolio?retryWrites=true&w=majority
+     NODE_ENV=production
+     ```
+
+4. **Deploy**
+   - Click **"Create Web Service"**
+   - Wait for deployment (2-3 minutes)
+   - Copy your Render URL (e.g., `https://portfolio-backend-xxxxx.onrender.com`)
+
+5. **Update Frontend**
+   - Update `VITE_BACKEND_URL` in frontend `.env`:
+     ```
+     VITE_BACKEND_URL=https://portfolio-backend-xxxxx.onrender.com
+     ```
+   - Rebuild and redeploy frontend
+
+### Health Check
+After deployment, verify your backend:
+```
+https://portfolio-backend-xxxxx.onrender.com/api/health
+```
+
+Should return:
+```json
+{
+  "success": true,
+  "message": "Backend is running",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+## Troubleshooting
+
+### Build Fails
+- Ensure `server` folder has `package.json` with `start` script
+- Check `render.yaml` has `rootDir: server`
+
+### MongoDB Connection Error
+- Verify `MONGO_URI` is correct in Render environment variables
+- Check MongoDB Atlas IP whitelist includes Render's IPs
+- Render IPs: Allow all (0.0.0.0/0) or check Render docs for specific IPs
+
+### Free Tier Limitations
+- Apps spin down after 15 minutes of inactivity
+- First request after spin-down takes ~30 seconds
+- Daily uptime limited to 750 hours/month
+
+## Frontend Integration
+
+### 1. Update Backend URL
+In your frontend `.env` file:
+```
 VITE_BACKEND_URL=http://localhost:5000
 ```
 
