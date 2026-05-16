@@ -293,6 +293,17 @@ const Projects = () => {
       github: 'https://github.com/Chanikyachowdarysamineni',
       live: 'https://160.187.169.41/csefaculty/',
     },
+    {
+      title: 'CoCreateX',
+      description: 'A collaborative platform designed for creative teams to co-create, share, and manage projects in real-time with seamless collaboration tools and intuitive workflows.',
+      tags: ['React', 'Collaboration', 'Real-time', 'UI/UX', 'Creative Platform'],
+      gradient: 'from-pink-500 to-rose-500',
+      glowColor: 'rgba(236,72,153,0.1)',
+      btnGradient: '#be123c, #9f1239',
+      emoji: FaLayerGroup,
+      github: 'https://github.com/Chanikyachowdarysamineni',
+      live: 'https://cocreatez-frontend.onrender.com',
+    },
   ]
 
   return (
