@@ -1,5 +1,15 @@
 services:
   - type: web
+    name: portfolio-frontend
+    env: static
+    plan: free
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: https://portfolio-backend.onrender.com
+
+  - type: web
     name: portfolio-backend
     env: node
     plan: free
