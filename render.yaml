@@ -5,6 +5,8 @@ services:
     plan: free
     rootDir: server
     startCommand: npm start
+    # Using Procfile + package.json for deployment
+    # Build process: npm install (root) -> npm run build (installs server deps) -> npm start (runs backend)
     envVars:
       - key: PORT
         value: 10000
