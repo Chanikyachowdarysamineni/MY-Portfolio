@@ -3,13 +3,9 @@ services:
     name: portfolio-backend
     env: node
     plan: free
-    rootDir: server
-    startCommand: npm start
-    nodeVersion: 24
-    # Do NOT specify buildCommand here - Render will auto-detect
-    # render.yaml will work if used via blueprint deploy
-    # For manual service creation, Render uses default build
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
         value: production
-      # MONGO_URI and PORT should be set in Render dashboard
+      # MONGO_URI and PORT must be set in Render Dashboard (Settings > Environment)
