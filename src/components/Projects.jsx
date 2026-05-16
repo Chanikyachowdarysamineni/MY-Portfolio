@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import {
   FaGithub, FaExternalLinkAlt, FaArrowRight,
-  FaCalendarAlt, FaShieldAlt, FaTerminal, FaLayerGroup, FaBolt,
+  FaCalendarAlt, FaShieldAlt, FaTerminal, FaLayerGroup, FaBolt, FaClipboardList,
 } from 'react-icons/fa'
 import { useState } from 'react'
 
@@ -17,7 +17,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
     <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
       <span
         style={{
-          background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+          background: 'linear-gradient(135deg, #c9ada7 0%, #4a4e69 50%, #9a8c98 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundSize: '200% 200%',
@@ -34,7 +34,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: 0.2 }}
       className="h-px max-w-xs mx-auto"
-      style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), rgba(6,182,212,0.5), transparent)' }}
+      style={{ background: 'linear-gradient(90deg, transparent, rgba(201,173,167,0.5), rgba(154,140,152,0.5), transparent)' }}
     />
   </motion.div>
 )
@@ -74,7 +74,7 @@ const ProjectCard = ({ project, index }) => {
           background: 'linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
           border: '1px solid rgba(255,255,255,0.07)',
           boxShadow: isHovered
-            ? '0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.12)'
+            ? '0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,173,167,0.12)'
             : '0 8px 32px rgba(0,0,0,0.3)',
           transition: 'box-shadow 0.3s ease',
           backdropFilter: 'blur(16px)',
@@ -92,7 +92,7 @@ const ProjectCard = ({ project, index }) => {
           animate={isHovered ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.3 }}
           style={{
-            background: `linear-gradient(180deg, ${project.glowColor || 'rgba(139,92,246,0.08)'} 0%, transparent 100%)`,
+            background: `linear-gradient(180deg, ${project.glowColor || 'rgba(201,173,167,0.08)'} 0%, transparent 100%)`,
           }}
         />
 
@@ -281,6 +281,17 @@ const Projects = () => {
       btnGradient: '#b45309, #c2410c',
       emoji: FaBolt,
       live: 'https://electricity-inventory-management-ivm.onrender.com',
+    },
+    {
+      title: 'Faculty Workload Management',
+      description: 'A comprehensive workload management system for faculty members to track assignments, manage schedules, and optimize teaching load distribution with analytics.',
+      tags: ['Faculty Management', 'Workload Tracking', 'Dashboard', 'Analytics', 'Administration'],
+      gradient: 'from-indigo-500 to-purple-500',
+      glowColor: 'rgba(99,102,241,0.1)',
+      btnGradient: '#4f46e5, #7c3aed',
+      emoji: FaClipboardList,
+      github: 'https://github.com/Chanikyachowdarysamineni',
+      live: 'https://160.187.169.41/csefaculty/',
     },
   ]
 

@@ -45,13 +45,13 @@ const LoadingScreen = ({ onComplete }) => {
           animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.1, 1] }}
           transition={{ duration: 4, repeat: Infinity }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(201,173,167,0.15) 0%, transparent 70%)' }}
         />
         <motion.div
           animate={{ opacity: [0.2, 0.45, 0.2], scale: [1, 1.15, 1] }}
           transition={{ duration: 5, repeat: Infinity, delay: 1 }}
           className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(154,140,152,0.1) 0%, transparent 70%)' }}
         />
       </div>
 
@@ -59,7 +59,7 @@ const LoadingScreen = ({ onComplete }) => {
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `linear-gradient(rgba(139,92,246,1) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,1) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(201,173,167,1) 1px, transparent 1px), linear-gradient(90deg, rgba(201,173,167,1) 1px, transparent 1px)`,
           backgroundSize: '60px 60px',
         }}
       />
@@ -72,10 +72,10 @@ const LoadingScreen = ({ onComplete }) => {
           style={{
             width: `${Math.random() * 6 + 2}px`,
             height: `${Math.random() * 6 + 2}px`,
-            background: i % 2 === 0 ? '#8b5cf6' : '#06b6d4',
+            background: i % 2 === 0 ? '#c9ada7' : '#9a8c98',
             left: `${10 + i * 11}%`,
             top: `${20 + (i % 3) * 25}%`,
-            boxShadow: `0 0 ${10 + i * 4}px ${i % 2 === 0 ? '#8b5cf6' : '#06b6d4'}`,
+            boxShadow: `0 0 ${10 + i * 4}px ${i % 2 === 0 ? '#c9ada7' : '#9a8c98'}`,
           }}
           animate={{
             y: [0, -40, 0],

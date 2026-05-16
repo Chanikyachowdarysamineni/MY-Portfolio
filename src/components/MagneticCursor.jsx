@@ -61,8 +61,8 @@ const MagneticCursor = () => {
       x: mousePosition.x - 32,
       y: mousePosition.y - 32,
       scale: 1.5,
-      backgroundColor: 'rgba(139, 92, 246, 0.2)',
-      border: '2px solid rgba(139, 92, 246, 0.8)',
+      backgroundColor: 'rgba(201, 173, 167, 0.2)',
+      border: '2px solid rgba(201, 173, 167, 0.8)',
     },
   }
 
@@ -70,7 +70,11 @@ const MagneticCursor = () => {
     <>
       {/* Main cursor */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-cosmic-purple pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 pointer-events-none z-[9999] mix-blend-difference"
+        style={{
+          borderColor: '#c9ada7',
+          opacity: isVisible ? 1 : 0,
+        }}
         variants={variants}
         animate={cursorVariant}
         transition={{
@@ -79,14 +83,11 @@ const MagneticCursor = () => {
           damping: 28,
           mass: 0.5,
         }}
-        style={{
-          opacity: isVisible ? 1 : 0,
-        }}
       />
       
       {/* Trailing dot */}
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-cosmic-cyan pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-[9999]"
         animate={{
           x: mousePosition.x - 3,
           y: mousePosition.y - 3,
@@ -98,8 +99,9 @@ const MagneticCursor = () => {
           mass: 0.2,
         }}
         style={{
+          backgroundColor: '#c9ada7',
           opacity: isVisible ? 1 : 0,
-          boxShadow: '0 0 10px rgba(6, 182, 212, 0.8), 0 0 20px rgba(6, 182, 212, 0.5)',
+          boxShadow: '0 0 10px rgba(201, 173, 167, 0.8), 0 0 20px rgba(201, 173, 167, 0.5)',
         }}
       />
     </>

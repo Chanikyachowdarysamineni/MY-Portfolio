@@ -24,7 +24,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
     <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
       <span
         style={{
-          background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+          background: 'linear-gradient(135deg, #c9ada7 0%, #4a4e69 50%, #9a8c98 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}
@@ -39,7 +39,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: 0.2 }}
       className="h-px max-w-xs mx-auto"
-      style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), rgba(6,182,212,0.5), transparent)' }}
+      style={{ background: 'linear-gradient(90deg, transparent, rgba(201,173,167,0.5), rgba(154,140,152,0.5), transparent)' }}
     />
   </motion.div>
 )

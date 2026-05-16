@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: portfolio-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        fromDatabase:
+          name: portfolio_db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: portfolio_db
+    databaseName: portfolio
+    user: portfolio_user
+    plan: free

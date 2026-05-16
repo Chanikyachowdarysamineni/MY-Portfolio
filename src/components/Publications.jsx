@@ -15,7 +15,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
     <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
       <span
         style={{
-          background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+          background: 'linear-gradient(135deg, #c9ada7 0%, #4a4e69 50%, #9a8c98 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}
@@ -30,7 +30,7 @@ const SectionHeader = ({ badge, title, subtitle }) => (
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: 0.2 }}
       className="h-px max-w-xs mx-auto"
-      style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), rgba(6,182,212,0.5), transparent)' }}
+      style={{ background: 'linear-gradient(90deg, transparent, rgba(201,173,167,0.5), rgba(154,140,152,0.5), transparent)' }}
     />
   </motion.div>
 )
@@ -73,7 +73,7 @@ const PublicationCard = ({ publication, index }) => {
           border: '1px solid rgba(255,255,255,0.07)',
           backdropFilter: 'blur(20px)',
           boxShadow: isHovered
-            ? '0 24px 60px rgba(0,0,0,0.5), 0 0 50px rgba(6,182,212,0.1)'
+            ? '0 24px 60px rgba(0,0,0,0.5), 0 0 50px rgba(201,173,167,0.1)'
             : '0 8px 32px rgba(0,0,0,0.3)',
           transition: 'box-shadow 0.3s ease',
         }}
@@ -98,15 +98,16 @@ const PublicationCard = ({ publication, index }) => {
             <span
               className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
               style={{
-                background: 'rgba(16,185,129,0.1)',
-                border: '1px solid rgba(16,185,129,0.3)',
-                color: '#34d399',
+                background: 'rgba(201,173,167,0.1)',
+                border: '1px solid rgba(201,173,167,0.3)',
+                color: '#c9ada7',
               }}
             >
               <motion.div
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: '#c9ada7' }}
               />
               {publication.status}
             </span>
@@ -114,9 +115,9 @@ const PublicationCard = ({ publication, index }) => {
             <span
               className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
               style={{
-                background: 'rgba(59,130,246,0.1)',
-                border: '1px solid rgba(59,130,246,0.3)',
-                color: '#60a5fa',
+                background: 'rgba(154,140,152,0.1)',
+                border: '1px solid rgba(154,140,152,0.3)',
+                color: '#9a8c98',
               }}
             >
               <FaCalendarAlt size={10} />
@@ -126,9 +127,9 @@ const PublicationCard = ({ publication, index }) => {
             <span
               className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
               style={{
-                background: 'rgba(139,92,246,0.1)',
-                border: '1px solid rgba(139,92,246,0.3)',
-                color: '#a78bfa',
+                background: 'rgba(74,78,105,0.1)',
+                border: '1px solid rgba(74,78,105,0.3)',
+                color: '#4a4e69',
               }}
             >
               <FaAward size={10} />
@@ -168,7 +169,7 @@ const PublicationCard = ({ publication, index }) => {
                 style={
                   isHovered
                     ? {
-                        background: 'linear-gradient(135deg, #a78bfa, #22d3ee)',
+                        background: 'linear-gradient(135deg, #c9ada7, #9a8c98)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                       }
@@ -180,8 +181,8 @@ const PublicationCard = ({ publication, index }) => {
 
               {/* Conference */}
               <div className="flex items-center gap-2">
-                <FaExternalLinkAlt size={12} style={{ color: '#22d3ee' }} />
-                <span className="text-sm font-semibold" style={{ color: '#22d3ee' }}>
+                <FaExternalLinkAlt size={12} style={{ color: '#c9ada7' }} />
+                <span className="text-sm font-semibold" style={{ color: '#c9ada7' }}>
                   {publication.conference}
                 </span>
               </div>
@@ -189,7 +190,7 @@ const PublicationCard = ({ publication, index }) => {
               {/* Quote / Description */}
               <div
                 className="relative pl-4 text-sm text-gray-500 leading-relaxed italic"
-                style={{ borderLeft: '2px solid rgba(139,92,246,0.3)' }}
+                style={{ borderLeft: '2px solid rgba(201,173,167,0.3)' }}
               >
                 <FaQuoteLeft size={10} className="absolute -left-1.5 -top-1 text-cosmic-purple opacity-50" />
                 {publication.description}
@@ -211,8 +212,8 @@ const PublicationCard = ({ publication, index }) => {
                 ))}
               </div>
 
-              {/* Action button */}
-              <div className="pt-2">
+              {/* Action buttons */}
+              <div className="pt-2 flex flex-wrap gap-3">
                 <motion.a
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
@@ -221,8 +222,8 @@ const PublicationCard = ({ publication, index }) => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white relative overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, #0891b2, #7c3aed)',
-                    boxShadow: '0 4px 20px rgba(6,182,212,0.25)',
+                    background: 'linear-gradient(135deg, #c9ada7, #9a8c98)',
+                    boxShadow: '0 4px 20px rgba(201,173,167,0.25)',
                     transform: 'translateZ(40px)',
                   }}
                 >
@@ -235,6 +236,30 @@ const PublicationCard = ({ publication, index }) => {
                   <FaFilePdf size={14} className="relative z-10" />
                   <span className="relative z-10">View Publication</span>
                 </motion.a>
+                {publication.ieeeLink && (
+                  <motion.a
+                    whileHover={{ scale: 1.04, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    href={publication.ieeeLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white relative overflow-hidden"
+                    style={{
+                      background: 'linear-gradient(135deg, #f59e0b, #ec4899)',
+                      boxShadow: '0 4px 20px rgba(245,158,11,0.25)',
+                      transform: 'translateZ(40px)',
+                    }}
+                  >
+                    <motion.div
+                      animate={{ x: ['-100%', '200%'] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)', transform: 'skewX(-15deg)' }}
+                    />
+                    <SiGooglescholar size={14} className="relative z-10" />
+                    <span className="relative z-10">IEEE Xplore</span>
+                  </motion.a>
+                )}
               </div>
             </div>
           </div>
@@ -245,7 +270,7 @@ const PublicationCard = ({ publication, index }) => {
           animate={isHovered ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.3 }}
           className="absolute inset-0 pointer-events-none rounded-2xl"
-          style={{ background: 'radial-gradient(ellipse at 50% 110%, rgba(6,182,212,0.1) 0%, transparent 60%)' }}
+          style={{ background: 'radial-gradient(ellipse at 50% 110%, rgba(201,173,167,0.1) 0%, transparent 60%)' }}
         />
       </motion.div>
     </motion.div>
@@ -263,6 +288,7 @@ const Publications = () => {
       description: 'Presents a novel approach to climate prediction using ensemble supervised machine learning techniques, optimized feature engineering, and multi-step time-series forecasting achieving significant accuracy improvements over traditional models.',
       tags: ['Machine Learning', 'Time-Series', 'Regression', 'Weather Forecasting', 'Feature Engineering', 'Python'],
       pdfLink: '/ML_Weather_Forecasting_Paper.pdf',
+      ieeeLink: 'https://ieeexplore.ieee.org/document/11324360',
       gradient: 'from-blue-500 via-cyan-500 to-teal-500',
       iconBg: 'rgba(6,182,212,0.15)',
       icon: FaBrain,

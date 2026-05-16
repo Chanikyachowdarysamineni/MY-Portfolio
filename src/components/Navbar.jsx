@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaDownload } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaDownload, FaUsers } from 'react-icons/fa'
 import { SiLeetcode } from 'react-icons/si'
 
-const Navbar = () => {
+const Navbar = ({ currentVisitorEmail, onVisitorsClick }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
 
+  const ADMIN_EMAIL = 'chanikyachowdary86@gmail.com'
+  const isAdmin = currentVisitorEmail === ADMIN_EMAIL
   const navItems = ['Home', 'Projects', 'Publications', 'Skills']
 
   useEffect(() => {
@@ -32,10 +34,10 @@ const Navbar = () => {
   }
 
   const socialLinks = [
-    { href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, label: 'LinkedIn', color: '#0ea5e9' },
-    { href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, label: 'GitHub', color: '#a78bfa' },
-    { href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, label: 'LeetCode', color: '#f59e0b' },
-    { href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, label: 'Email', color: '#06b6d4' },
+    { href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, label: 'LinkedIn', color: '#4a4e69' },
+    { href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, label: 'GitHub', color: '#9a8c98' },
+    { href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, label: 'LeetCode', color: '#c9ada7' },
+    { href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, label: 'Email', color: '#c9ada7' },
   ]
 
   return (
@@ -51,10 +53,10 @@ const Navbar = () => {
         transition={{ duration: 0.3 }}
         className="absolute inset-0"
         style={{
-          background: 'rgba(3, 4, 15, 0.75)',
+          background: 'rgba(34, 34, 59, 0.75)',
           backdropFilter: 'blur(28px) saturate(200%)',
-          borderBottom: '1px solid rgba(139, 92, 246, 0.1)',
-          boxShadow: '0 4px 30px rgba(0,0,0,0.4), 0 0 60px rgba(139,92,246,0.04)',
+          borderBottom: '1px solid rgba(201, 173, 167, 0.1)',
+          boxShadow: '0 4px 30px rgba(0,0,0,0.4), 0 0 60px rgba(201,173,167,0.04)',
         }}
       />
 
@@ -63,7 +65,7 @@ const Navbar = () => {
         animate={{ scaleX: isScrolled ? 1 : 0, opacity: isScrolled ? 1 : 0 }}
         transition={{ duration: 0.4 }}
         className="absolute top-0 left-0 right-0 h-[1px] origin-left"
-        style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6 30%, #06b6d4 70%, transparent)' }}
+        style={{ background: 'linear-gradient(90deg, transparent, #c9ada7 30%, #9a8c98 70%, transparent)' }}
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
@@ -81,13 +83,13 @@ const Navbar = () => {
               transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
               className="w-7 h-7 rounded-full flex-shrink-0"
               style={{
-                background: 'conic-gradient(from 0deg, #8b5cf6, #3b82f6, #06b6d4, #8b5cf6)',
+                background: 'conic-gradient(from 0deg, #c9ada7, #4a4e69, #9a8c98, #c9ada7)',
                 padding: '1.5px',
               }}
             >
               <div
                 className="w-full h-full rounded-full flex items-center justify-center font-bold text-white"
-                style={{ background: '#03040f', fontSize: '9px' }}
+                style={{ background: '#22223b', fontSize: '9px' }}
               >
                 CC
               </div>
@@ -95,7 +97,7 @@ const Navbar = () => {
             <span
               className="text-base sm:text-lg font-bold tracking-tight"
               style={{
-                background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+                background: 'linear-gradient(135deg, #c9ada7 0%, #4a4e69 50%, #9a8c98 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
@@ -104,7 +106,7 @@ const Navbar = () => {
             </span>
             <motion.div
               className="absolute -bottom-1 left-0 h-px w-0 group-hover:w-full transition-all duration-300 origin-left"
-              style={{ background: 'linear-gradient(90deg, #8b5cf6, #06b6d4)' }}
+              style={{ background: 'linear-gradient(90deg, #c9ada7, #9a8c98)' }}
             />
           </motion.button>
 
@@ -122,15 +124,15 @@ const Navbar = () => {
                   whileTap={{ scale: 0.96 }}
                   onClick={() => scrollToSection(item.toLowerCase())}
                   className="relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                  style={{ color: isActive ? '#a78bfa' : '#94a3b8' }}
+                  style={{ color: isActive ? '#c9ada7' : '#9a8c98' }}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeNavBg"
                       className="absolute inset-0 rounded-lg"
                       style={{
-                        background: 'rgba(139,92,246,0.12)',
-                        border: '1px solid rgba(139,92,246,0.25)',
+                        background: 'rgba(201,173,167,0.12)',
+                        border: '1px solid rgba(201,173,167,0.25)',
                       }}
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
@@ -140,12 +142,33 @@ const Navbar = () => {
                     <motion.div
                       layoutId="activeNavDot"
                       className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                      style={{ background: '#8b5cf6' }}
+                      style={{ background: '#c9ada7' }}
                     />
                   )}
                 </motion.button>
               )
             })}
+
+            {/* Visitors Button - Show only for admin */}
+            {isAdmin && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 }}
+                onClick={onVisitorsClick}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                className="relative ml-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
+                style={{
+                  background: 'rgba(201, 173, 167, 0.12)',
+                  color: '#c9ada7',
+                  border: '1px solid rgba(201, 173, 167, 0.3)',
+                }}
+              >
+                <FaUsers size={14} />
+                <span>Visitors</span>
+              </motion.button>
+            )}
           </div>
 
           {/* Right side: social icons + resume */}
@@ -169,7 +192,7 @@ const Navbar = () => {
                   <Icon size={16} style={{ position: 'relative', color: 'inherit' }} className="group-hover:text-white transition-colors" />
                   <span
                     className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                    style={{ background: 'rgba(15,15,30,0.9)', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.1)' }}
+                    style={{ background: 'rgba(15,15,30,0.9)', color: '#f2e9e4', border: '1px solid rgba(255,255,255,0.1)' }}
                   >
                     {label}
                   </span>
@@ -186,8 +209,8 @@ const Navbar = () => {
               whileTap={{ scale: 0.97 }}
               className="relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #7c3aed, #2563eb)',
-                boxShadow: '0 4px 15px rgba(139,92,246,0.3)',
+                background: 'linear-gradient(135deg, #c9ada7, #4a4e69)',
+                boxShadow: '0 4px 15px rgba(201,173,167,0.3)',
               }}
             >
               <motion.div

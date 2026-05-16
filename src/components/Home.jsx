@@ -72,12 +72,12 @@ const StatCard = ({ value, label, icon, delay }) => (
     >
       <motion.div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: 'radial-gradient(circle at 50% 120%, rgba(139,92,246,0.12), transparent 60%)' }}
+        style={{ background: 'radial-gradient(circle at 50% 120%, rgba(201,173,167,0.12), transparent 60%)' }}
       />
       <motion.div
         className="text-2xl font-black mb-0.5 group-hover:text-cosmic-purple-light transition-colors"
         style={{
-          background: 'linear-gradient(135deg, #a78bfa, #60a5fa)',
+          background: 'linear-gradient(135deg, #c9ada7, #4a4e69)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}
@@ -95,10 +95,10 @@ const Home = () => {
   const typewriterText = useTypewriter(roles)
 
   const socialLinks = [
-    { href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, label: 'GitHub', color: '#a78bfa' },
-    { href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, label: 'LinkedIn', color: '#60a5fa' },
-    { href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, label: 'LeetCode', color: '#f59e0b' },
-    { href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, label: 'Email', color: '#22d3ee' },
+    { href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, label: 'GitHub', color: '#9a8c98' },
+    { href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, label: 'LinkedIn', color: '#4a4e69' },
+    { href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, label: 'LeetCode', color: '#c9ada7' },
+    { href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, label: 'Email', color: '#c9ada7' },
   ]
 
   const containerVariants = {
@@ -119,11 +119,11 @@ const Home = () => {
       {/* Section-level glow */}
       <div
         className="absolute top-1/3 left-0 w-[500px] h-[500px] pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(201,173,167,0.08) 0%, transparent 60%)' }}
       />
       <div
         className="absolute bottom-1/4 right-0 w-[400px] h-[400px] pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 60%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(201,173,167,0.06) 0%, transparent 60%)' }}
       />
 
       <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -140,16 +140,16 @@ const Home = () => {
               whileHover={{ scale: 1.04 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
               style={{
-                background: 'rgba(139,92,246,0.1)',
-                border: '1px solid rgba(139,92,246,0.3)',
-                color: '#a78bfa',
+                background: 'rgba(201,173,167,0.1)',
+                border: '1px solid rgba(201,173,167,0.3)',
+                color: '#c9ada7',
               }}
             >
               <motion.span
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-emerald-400"
-                style={{ boxShadow: '0 0 8px #10b981' }}
+                className="w-2 h-2 rounded-full"
+                style={{ background: '#9a8c98', boxShadow: '0 0 8px #9a8c98' }}
               />
               Available for opportunities
             </motion.span>
@@ -161,7 +161,7 @@ const Home = () => {
               <span className="text-white">Hi, I'm </span>
               <span
                 style={{
-                  background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
+                  background: 'linear-gradient(135deg, #c9ada7 0%, #4a4e69 50%, #9a8c98 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   display: 'inline-block',
@@ -179,9 +179,9 @@ const Home = () => {
               <span
                 className="inline-block w-[2px] h-6 sm:h-7 rounded-sm"
                 style={{
-                  background: '#8b5cf6',
+                  background: '#c9ada7',
                   animation: 'blink 1s step-end infinite',
-                  boxShadow: '0 0 8px rgba(139,92,246,0.8)',
+                  boxShadow: '0 0 8px rgba(201,173,167,0.8)',
                 }}
               />
             </div>
@@ -193,8 +193,8 @@ const Home = () => {
             className="text-base sm:text-lg text-gray-400 leading-relaxed max-w-lg"
           >
             Crafting high-performance, visually stunning web experiences. Specialized in{' '}
-            <span className="text-cosmic-cyan font-semibold">React</span>,{' '}
-            <span className="text-cosmic-purple font-semibold">Node.js</span>, and modern full-stack architectures.
+            <span className="text-cosmic-taupe font-semibold">React</span>,{' '}
+            <span className="text-cosmic-mauve font-semibold">Node.js</span>, and modern full-stack architectures.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -206,8 +206,8 @@ const Home = () => {
               href="#projects"
               className="group relative flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm text-white overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #7c3aed, #2563eb, #0891b2)',
-                boxShadow: '0 8px 30px rgba(139,92,246,0.4), 0 0 0 1px rgba(139,92,246,0.2)',
+                background: 'linear-gradient(135deg, #c9ada7, #9a8c98, #4a4e69)',
+                boxShadow: '0 8px 30px rgba(201,173,167,0.4), 0 0 0 1px rgba(201,173,167,0.2)',
               }}
             >
               <motion.div
@@ -228,14 +228,14 @@ const Home = () => {
               className="group relative flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm overflow-hidden"
               style={{
                 background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(139,92,246,0.3)',
-                color: '#a78bfa',
+                border: '1px solid rgba(201,173,167,0.3)',
+                color: '#c9ada7',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
               }}
             >
               <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: 'rgba(139,92,246,0.08)' }}
+                style={{ background: 'rgba(201,173,167,0.08)' }}
               />
               <FaCode size={14} className="relative z-10" />
               <span className="relative z-10">Let's Connect</span>

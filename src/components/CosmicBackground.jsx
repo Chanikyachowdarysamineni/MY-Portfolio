@@ -21,11 +21,11 @@ const CosmicBackground = () => {
     let mouse = { x: canvas.width / 2, y: canvas.height / 2 }
 
     const COLORS = [
-      [139, 92, 246],   // purple
-      [59, 130, 246],   // blue
-      [6, 182, 212],    // cyan
-      [191, 90, 255],   // neon purple
-      [0, 245, 255],    // neon cyan
+      [201, 173, 167],  // taupe
+      [74, 78, 105],    // slate
+      [154, 140, 152],  // mauve
+      [196, 163, 160],  // warm taupe
+      [242, 233, 228],  // cream
       [255, 255, 255],  // white
     ]
 
