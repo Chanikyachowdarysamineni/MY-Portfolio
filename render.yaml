@@ -3,20 +3,13 @@ services:
     name: portfolio-backend
     env: node
     plan: free
+    rootDir: server
     buildCommand: npm install
     startCommand: npm start
     envVars:
       - key: PORT
         value: 10000
       - key: MONGO_URI
-        fromDatabase:
-          name: portfolio_db
-          property: connectionString
+        value: mongodb+srv://raavanaasura87_db_user:Chani8877@chani.irvyksk.mongodb.net/portfolio?retryWrites=true&w=majority
       - key: NODE_ENV
         value: production
-
-databases:
-  - name: portfolio_db
-    databaseName: portfolio
-    user: portfolio_user
-    plan: free
