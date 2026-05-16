@@ -3,11 +3,8 @@ services:
     name: portfolio-frontend
     env: static
     plan: free
-    buildCommand: npm run build
+    buildCommand: npm install && VITE_BACKEND_URL=https://portfolio-backend.onrender.com npm run build
     staticPublishPath: ./dist
-    envVars:
-      - key: VITE_BACKEND_URL
-        value: https://portfolio-backend.onrender.com
 
   - type: web
     name: portfolio-backend

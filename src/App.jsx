@@ -24,6 +24,9 @@ function App() {
   const ADMIN_EMAIL = 'chanikyachowdary86@gmail.com'
 
   useEffect(() => {
+    // Log backend URL for debugging deployment issues
+    console.log('🔧 Backend URL:', BACKEND_URL)
+    
     // Smooth scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth'
 
@@ -37,6 +40,8 @@ function App() {
 
   const handleVisitorSubmit = async (formData) => {
     try {
+      console.log('📤 Sending request to:', `${BACKEND_URL}/api/visitors/register`)
+      
       // Save to backend
       const response = await axios.post(
         `${BACKEND_URL}/api/visitors/register`,
@@ -51,6 +56,8 @@ function App() {
         }
       )
 
+      console.log('✅ Response received:', response.data)
+
       if (response.data.success) {
         // Store email and name in localStorage for this session
         localStorage.setItem('visitorEmail', formData.email)
@@ -63,7 +70,9 @@ function App() {
         }, 2000)
       }
     } catch (error) {
-      console.error('Error submitting visitor info:', error)
+      console.error('❌ Error submitting visitor info:', error)
+      console.error('❌ Backend URL being used:', BACKEND_URL)
+      console.error('❌ Full error:', error.message)
       throw new Error(
         error.response?.data?.message ||
           'Failed to save your information. Please try again.'
