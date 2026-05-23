@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaDownload, FaUsers } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaDownload } from 'react-icons/fa'
 import { SiLeetcode } from 'react-icons/si'
 
-const Navbar = ({ currentVisitorEmail, onVisitorsClick }) => {
+const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
-
-  const ADMIN_EMAIL = 'chanikyachowdary86@gmail.com'
-  const isAdmin = currentVisitorEmail === ADMIN_EMAIL
   const navItems = ['Home', 'Projects', 'Publications', 'Skills']
 
   useEffect(() => {
@@ -148,27 +145,6 @@ const Navbar = ({ currentVisitorEmail, onVisitorsClick }) => {
                 </motion.button>
               )
             })}
-
-            {/* Visitors Button - Show only for admin */}
-            {isAdmin && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 }}
-                onClick={onVisitorsClick}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.96 }}
-                className="relative ml-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
-                style={{
-                  background: 'rgba(201, 173, 167, 0.12)',
-                  color: '#c9ada7',
-                  border: '1px solid rgba(201, 173, 167, 0.3)',
-                }}
-              >
-                <FaUsers size={14} />
-                <span>Visitors</span>
-              </motion.button>
-            )}
           </div>
 
           {/* Right side: social icons + resume */}
