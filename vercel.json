@@ -3,29 +3,5 @@
   "installCommand": "npm install",
   "outputDirectory": "dist",
   "framework": "vite",
-  "nodeVersion": "24.x",
-  "functions": {
-    "api/**: "api/**/*.js"
-  },
-  "redirects": [
-    {
-      "source": "/old-path",
-      "destination": "/new-path",
-      "permanent": true
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    }
-  ],
-  "env": {
-    "VITE_BACKEND_URL": "@vite_backend_url"
-  }
+  "nodeVersion": "20.x"
 }
