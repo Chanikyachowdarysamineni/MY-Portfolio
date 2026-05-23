@@ -5,6 +5,13 @@ services:
     plan: free
     buildCommand: npm install && VITE_BACKEND_URL=https://portfolio-backend.onrender.com npm run build
     staticPublishPath: ./dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromService:
+          name: portfolio-backend
+          type: web
+          property: url
+          path: /api
 
   - type: web
     name: portfolio-backend
@@ -16,3 +23,5 @@ services:
       - key: NODE_ENV
         value: production
       # MONGO_URI and PORT must be set in Render Dashboard (Settings > Environment)
+      # MongoDB Atlas Connection String format:
+      # mongodb+srv://username:password@cluster.mongodb.net/portfolio

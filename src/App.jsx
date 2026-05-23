@@ -42,7 +42,7 @@ function App() {
     try {
       console.log('📤 Sending request to:', `${BACKEND_URL}/api/visitors/register`)
       
-      // Save to backend
+      // Save to backend with timeout
       const response = await axios.post(
         `${BACKEND_URL}/api/visitors/register`,
         {
@@ -53,6 +53,7 @@ function App() {
           headers: {
             'Content-Type': 'application/json',
           },
+          timeout: 10000, // 10 second timeout
         }
       )
 
@@ -70,13 +71,25 @@ function App() {
         }, 2000)
       }
     } catch (error) {
-      console.error('❌ Error submitting visitor info:', error)
+      console.error('❌ Error submitting visitor info:', error.message)
       console.error('❌ Backend URL being used:', BACKEND_URL)
-      console.error('❌ Full error:', error.message)
-      throw new Error(
-        error.response?.data?.message ||
-          'Failed to save your information. Please try again.'
-      )
+      console.error('❌ Error status:', error.response?.status)
+      console.error('❌ Error details:', error.response?.data)
+      
+      // Provide user-friendly error messages
+      let errorMessage = 'Failed to save your information. Please try again.'
+      
+      if (error.code === 'ECONNABORTED') {
+        errorMessage = 'Connection timeout. The server may be starting up. Please try again.'
+      } else if (error.message === 'Network Error') {
+        errorMessage = 'Network error. Make sure the backend server is running at: ' + BACKEND_URL
+      } else if (error.response?.status === 500) {
+        errorMessage = 'Server error. Please try again later.'
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message
+      }
+      
+      throw new Error(errorMessage)
     }
   }
 

@@ -10,14 +10,32 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-// Middleware - Configure CORS with explicit options
+// Middleware - Configure CORS with dynamic origin support
 const corsOptions = {
-  origin: [
-    'http://localhost:3000', // Local development
-    'http://localhost:5173', // Vite default dev port
-    'https://portfolio-frontend.onrender.com', // Render frontend
-    'https://my-profile-ruby-eta.vercel.app', // Vercel if used
-  ],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000', // Local development
+      'http://localhost:5173', // Vite default dev port
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:5173',
+      'https://portfolio-frontend.onrender.com', // Render frontend
+      'https://my-profile-ruby-eta.vercel.app', // Vercel if used
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else if (process.env.NODE_ENV === 'development') {
+      // In development, allow any origin
+      console.log('⚠️  CORS: Allowing origin in development:', origin);
+      callback(null, true);
+    } else {
+      console.warn('❌ CORS: Blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -94,7 +112,8 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔐 CORS Origins allowed:`, corsOptions.origin);
+  console.log(`✅ API Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`✅ API Test Endpoint: http://localhost:${PORT}/api/test`);
   console.log(`✅ Ready to accept requests`);
 });
 
