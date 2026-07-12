@@ -1,24 +1,39 @@
-import { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaHeart, FaCoffee } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope, FaHeart, FaCoffee, FaArrowRight } from 'react-icons/fa'
 import { SiLeetcode } from 'react-icons/si'
 import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Projects from './components/Projects'
-import Publications from './components/Publications'
 import Skills from './components/Skills'
-import CosmicBackground from './components/CosmicBackground'
+import Certifications from './components/Certifications'
+import Publications from './components/Publications'
+import Contact from './components/Contact'
 import LoadingScreen from './components/LoadingScreen'
 import './App.css'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
+  const [isDark, setIsDark] = useState(false) // Default to light mode for white background
 
   useEffect(() => {
-    // Smooth scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth'
+    
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      setIsDark(false)
+    }
   }, [])
 
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [isDark])
+
+  const toggleTheme = () => setIsDark(!isDark)
 
   return (
     <>
@@ -28,126 +43,81 @@ function App() {
         )}
       </AnimatePresence>
 
-
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.5 }}
-        className="relative min-h-screen bg-cosmic-dark text-white overflow-x-hidden"
+        className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-body)] transition-colors duration-300 antialiased selection:bg-[var(--color-primary)] selection:text-white"
       >
+        <Navbar isDark={isDark} toggleTheme={toggleTheme} />
         
-        {/* Animated Background */}
-        <CosmicBackground />
+        <main className="relative z-10 w-full px-4 sm:px-6 lg:px-8 max-w-screen-2xl mx-auto">
+          <Home />
+          <Projects />
+          <Certifications />
+          <Publications />
+          <Skills />
+          <Contact />
+        </main>
+        
+        {/* Floating CTA */}
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 0.8 }}
+          className="fixed bottom-6 right-6 z-50 hidden sm:block"
+        >
+          <a
+            href="#contact"
+            className="group flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-white bg-gradient-cta shadow-glow-accent hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+          >
+            Let's Work Together
+            <FaArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </a>
+        </motion.div>
 
-        {/* Main Content */}
-        <div className="relative z-10">
-        <Navbar />
-        <Home />
-        <Projects />
-        <Publications />
-        <Skills />
-        
         {/* Footer */}
-        <footer className="relative px-4 sm:px-6 mt-12 sm:mt-16">
-          {/* Top divider with glow */}
-          <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            whileInView={{ scaleX: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="h-px w-full"
-            style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(139,92,246,0.6) 30%, rgba(6,182,212,0.6) 70%, transparent 100%)',
-              boxShadow: '0 0 20px rgba(139,92,246,0.3)',
-            }}
-          />
-
-          <div className="max-w-7xl mx-auto py-12 sm:py-16">
+        <footer className="relative mt-24 sm:mt-32 border-t border-[var(--color-border)] bg-[var(--color-ink)] text-[var(--color-bone)]">
+          <div className="w-full max-w-screen-2xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="flex flex-col items-center gap-10"
+              className="flex flex-col items-center gap-8"
             >
-              {/* Name & tagline */}
               <div className="text-center space-y-2">
-                <motion.p
-                  className="text-2xl sm:text-3xl font-black tracking-tight"
-                  style={{
-                    background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
+                <p className="text-3xl font-display font-bold tracking-tight text-[var(--color-bone)]">
                   Chanikya Chowdary Samineni
-                </motion.p>
-                <p className="text-gray-500 text-sm sm:text-base font-medium">
-                  Full Stack Developer | React Engineer | Open Source Enthusiast
+                </p>
+                <p className="text-gray-400 text-sm sm:text-base font-medium">
+                  Engineering Scalable Systems. Designing Premium Experiences.
                 </p>
               </div>
 
-              {/* Tech stack used */}
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                {[
-                  { label: 'React 18', color: '#61DAFB' },
-                  { label: 'Vite 5', color: '#646CFF' },
-                  { label: 'Tailwind CSS', color: '#06B6D4' },
-                  { label: 'Framer Motion', color: '#FF0055' },
-                  { label: 'Node.js', color: '#339933' },
-                ].map((tech) => (
-                  <motion.span
-                    key={tech.label}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    className="tech-tag text-xs"
-                    style={{ borderColor: tech.color + '30', color: tech.color }}
-                  >
-                    {tech.label}
-                  </motion.span>
-                ))}
-              </div>
-
               {/* Social links */}
-              <motion.div className="flex items-center gap-5">
+              <div className="flex items-center gap-6">
                 {[
-                  { label: 'GitHub', href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub, color: '#a78bfa' },
-                  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin, color: '#0ea5e9' },
-                  { label: 'LeetCode', href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode, color: '#f59e0b' },
-                  { label: 'Email', href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope, color: '#06b6d4' },
+                  { label: 'GitHub', href: 'https://github.com/Chanikyachowdarysamineni', Icon: FaGithub },
+                  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/chanikya-chowdary-samineni-245659318/', Icon: FaLinkedin },
+                  { label: 'LeetCode', href: 'https://leetcode.com/u/oO8MDDX40s/', Icon: SiLeetcode },
+                  { label: 'Email', href: 'mailto:chanikyachowdary86@gmail.com', Icon: FaEnvelope },
                 ].map((link) => (
-                  <motion.a
+                  <a
                     key={link.label}
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="group flex items-center gap-1.5 text-gray-500 hover:text-gray-300 transition-colors text-xs sm:text-sm font-medium"
+                    className="text-gray-400 hover:text-[var(--color-coral)] transition-colors"
+                    aria-label={link.label}
                   >
-                    <link.Icon size={16} style={{ color: 'inherit' }} className="group-hover:text-current" />
-                    <span className="hidden sm:inline">{link.label}</span>
-                  </motion.a>
+                    <link.Icon size={24} />
+                  </a>
                 ))}
-              </motion.div>
-
-              {/* Bottom line */}
-              <div className="flex flex-col items-center gap-2 pt-2 border-t border-white/5 w-full">
-                <motion.p
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="flex items-center gap-2 text-gray-600 text-xs sm:text-sm font-mono text-center"
-                >
-                  Crafted with
-                  <FaHeart size={12} style={{ color: '#a78bfa' }} />
-                  and a lot of
-                  <FaCoffee size={12} style={{ color: '#f59e0b' }} />
-                  &mdash; Copyright {new Date().getFullYear()} All rights reserved
-                </motion.p>
               </div>
             </motion.div>
           </div>
         </footer>
-      </div>
       </motion.div>
     </>
   )

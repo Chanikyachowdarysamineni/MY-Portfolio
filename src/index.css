@@ -1,548 +1,121 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   GLOBAL RESET & BASE
-   ============================================ */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
+@layer base {
+  :root {
+    /* Base + Accent Palette */
+    --color-ink: #0B0B0C;
+    --color-charcoal: #1A1A1D;
+    --color-bone: #F5F3EE;
+    --color-coral: #D85A30;
+    --color-violet: #7F77DD;
+
+    /* Semantic Variables (Light Mode Default) */
+    --color-primary: var(--color-coral);
+    --color-primary-hover: #F0997B;
+    --color-accent: var(--color-violet);
+    --color-success: #22C55E;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
+    
+    --color-background: var(--color-bone);
+    --color-surface: #FFFFFF;
+    --color-card: #FFFFFF;
+    --color-border: #E5E4DE;
+    
+    --color-heading: var(--color-charcoal);
+    --color-body: var(--color-charcoal);
+    --color-muted: #6B7280;
+  }
+
+  .dark {
+    --color-background: var(--color-ink);
+    --color-surface: var(--color-charcoal);
+    --color-card: var(--color-charcoal);
+    --color-border: #2D2D30;
+    
+    --color-heading: var(--color-bone);
+    --color-body: #D1D5DB;
+    --color-muted: #94A3B8;
+  }
+}
+
+* {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
-  font-size: 16px;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  background: #22223b;
-  cursor: auto;
   line-height: 1.6;
-  color: #f2e9e4;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  body { cursor: default; }
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-#root { min-height: 100vh; }
-
-/* ============================================
-   CUSTOM SCROLLBAR
-   ============================================ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #1a1a2e; }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #9a8c98 0%, #c9ada7 100%);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #c9ada7 0%, #e8ddd7 100%);
-  box-shadow: 0 0 12px rgba(201, 173, 167, 0.6);
+::selection {
+  background: var(--color-primary);
+  color: #fff;
 }
 
-/* ============================================
-   TEXT SELECTION
-   ============================================ */
-::selection { background: rgba(201, 173, 167, 0.35); color: #22223b; }
-::-moz-selection { background: rgba(201, 173, 167, 0.35); color: #22223b; }
-
-/* ============================================
-   GLASSMORPHISM
-   ============================================ */
+/* Glassmorphism */
 .glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.glass-strong {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+.dark .glass {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.glass-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+/* Premium Card hover */
+.premium-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ============================================
-   GRADIENT TEXT
-   ============================================ */
-.gradient-text {
-  background: linear-gradient(135deg, #c9ada7 0%, #9a8c98 50%, #4a4e69 100%);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientXY 4s ease infinite;
+.premium-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.08);
+}
+.dark .premium-card:hover {
+  box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.3);
 }
 
-.gradient-text-warm {
-  background: linear-gradient(135deg, #c9ada7 0%, #9a8c98 50%, #4a4e69 100%);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientXY 4s ease infinite;
-}
-
-.gradient-text-gold {
-  background: linear-gradient(135deg, #e8ddd7 0%, #c9ada7 50%, #9a8c98 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ============================================
-   ADVANCED CARD EFFECTS
-   ============================================ */
-.card-hover-effect {
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover-effect::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(201,173,167,0) 0%, rgba(201,173,167,0) 50%, rgba(201,173,167,0) 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.card-hover-effect:hover::before {
-  opacity: 1;
-  background: linear-gradient(135deg, rgba(201,173,167,0.25) 0%, rgba(154,140,152,0.15) 50%, rgba(201,173,167,0.25) 100%);
-}
-
-.card-hover-effect:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,173,167,0.15);
-}
-
-/* ============================================
-   HOLOGRAPHIC BORDER
-   ============================================ */
-.holographic-border {
-  position: relative;
-}
-
-.holographic-border::before {
-  content: '';
-  position: absolute;
-  inset: -1.5px;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #9a8c98, #4a4e69, #c9ada7, #4a4e69, #9a8c98);
-  background-size: 300% 100%;
-  animation: gradientX 4s linear infinite;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.holographic-border:hover::before {
-  opacity: 1;
-}
-
-/* ============================================
-   SECTION DIVIDER
-   ============================================ */
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201,173,167,0.4), rgba(154,140,152,0.4), transparent);
-  margin: 0 auto;
-  width: 80%;
-}
-
-/* ============================================
-   NEON GLOW EFFECTS
-   ============================================ */
-.neon-glow {
-  text-shadow:
-    0 0 10px rgba(201, 173, 167, 0.6),
-    0 0 20px rgba(201, 173, 167, 0.4),
-    0 0 40px rgba(201, 173, 167, 0.2);
-  animation: neonPulse 2s ease-in-out infinite;
-}
-
-.neon-glow-cyan {
-  text-shadow:
-    0 0 10px rgba(201, 173, 167, 0.6),
-    0 0 20px rgba(201, 173, 167, 0.4),
-    0 0 40px rgba(201, 173, 167, 0.2);
-}
-
-@keyframes neonPulse {
-  0%, 100% {
-    text-shadow:
-      0 0 10px rgba(201, 173, 167, 0.6),
-      0 0 20px rgba(201, 173, 167, 0.4),
-      0 0 40px rgba(201, 173, 167, 0.2);
-  }
-  50% {
-    text-shadow:
-      0 0 15px rgba(201, 173, 167, 0.9),
-      0 0 30px rgba(201, 173, 167, 0.6),
-      0 0 60px rgba(201, 173, 167, 0.3),
-      0 0 80px rgba(201, 173, 167, 0.1);
-  }
-}
-
-/* ============================================
-   TAG / BADGE STYLES
-   ============================================ */
-.tech-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  background: rgba(201, 173, 167, 0.1);
-  border: 1px solid rgba(201, 173, 167, 0.25);
-  border-radius: 9999px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #c9ada7;
-  letter-spacing: 0.02em;
-  transition: all 0.2s ease;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.tech-tag:hover {
-  background: rgba(201, 173, 167, 0.2);
-  border-color: rgba(201, 173, 167, 0.5);
-  color: #e8ddd7;
-  transform: translateY(-1px);
-}
-
-/* ============================================
-   SHIMMER EFFECT
-   ============================================ */
-.shimmer-overlay {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.08) 50%,
-    transparent 60%
-  );
-  background-size: 200% 100%;
-  animation: shimmerSlide 3s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes shimmerSlide {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ============================================
-   PULSE RING EFFECT
-   ============================================ */
-.pulse-ring {
-  position: relative;
-}
-
-.pulse-ring::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-  border: 2px solid rgba(201, 173, 167, 0.5);
-  animation: pulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
-  pointer-events: none;
-}
-
-@keyframes pulseRing {
-  0% { transform: scale(1); opacity: 0.7; }
-  70% { transform: scale(1.1); opacity: 0; }
-  100% { transform: scale(1.1); opacity: 0; }
-}
-
-/* ============================================
-   FLOATING ANIMATION
-   ============================================ */
-.float { animation: float 6s ease-in-out infinite; }
-.float-slow { animation: float 9s ease-in-out infinite; }
-.float-fast { animation: float 4s ease-in-out infinite; }
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-18px); }
-}
-
-/* ============================================
-   TYPEWRITER CURSOR
-   ============================================ */
-.typewriter-cursor {
-  display: inline-block;
-  width: 3px;
-  height: 1.1em;
-  background: #c9ada7;
-  margin-left: 4px;
-  vertical-align: text-bottom;
-  border-radius: 2px;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ============================================
-   GRADIENT BORDER ANIMATION - outline on cards
-   ============================================ */
-.animated-gradient-border {
-  position: relative;
-  border-radius: 1rem;
-}
-
-.animated-gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: calc(1rem + 2px);
-  background: linear-gradient(135deg, #c9ada7, #4a4e69, #9a8c98, #4a4e69);
-  background-size: 300% 300%;
-  animation: gradientXY 4s ease infinite;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.animated-gradient-border:hover::before {
-  opacity: 1;
-}
-
-/* ============================================
-   SECTION HEADER DECORATION
-   ============================================ */
-.section-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 20px;
-  background: rgba(201, 173, 167, 0.1);
-  border: 1px solid rgba(201, 173, 167, 0.3);
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #c9ada7;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
-}
-
-/* ============================================
-   GRID LINES DECORATION
-   ============================================ */
-.grid-decoration {
-  background-image:
-    linear-gradient(rgba(201, 173, 167, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201, 173, 167, 0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* ============================================
-   HOVER LIFT
-   ============================================ */
-.hover-lift {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 50px rgba(201, 173, 167, 0.25), 0 0 30px rgba(201, 173, 167, 0.1);
-}
-
-/* ============================================
-   3D CARD STYLES
-   ============================================ */
-.card-3d { transform-style: preserve-3d; }
-.card-3d-content { transform: translateZ(20px); }
-
-/* ============================================
-   GRADIENT BACKGROUNDS
-   ============================================ */
-.bg-aurora {
-  background: linear-gradient(135deg, #c9ada7 0%, #4a4e69 35%, #9a8c98 65%, #4a4e69 100%);
-  background-size: 300% 300%;
-  animation: gradientXY 6s ease infinite;
-}
-
-.bg-aurora-text {
-  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 35%, #22d3ee 65%, #34d399 100%);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientXY 5s ease infinite;
-}
-
-/* ============================================
-   GRADIENT ANIMATIONS
-   ============================================ */
-@keyframes gradientX {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes gradientY {
-  0%, 100% { background-position: 50% 0%; }
-  50% { background-position: 50% 100%; }
-}
-
-@keyframes gradientXY {
-  0%, 100% { background-position: 0% 0%; }
-  25% { background-position: 100% 0%; }
-  50% { background-position: 100% 100%; }
-  75% { background-position: 0% 100%; }
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-.perspective { perspective: 1000px; }
-.preserve-3d { transform-style: preserve-3d; }
-.backface-hidden { backface-visibility: hidden; }
-
-/* ============================================
-   FOCUS STYLES
-   ============================================ */
+/* Focus styles */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid rgba(139, 92, 246, 0.8);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
-/* ============================================
-   SCANLINE DECORATION (subtle CRT effect for hero)
-   ============================================ */
-.scanlines {
-  position: relative;
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-.scanlines::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ============================================
-   PROGRESS BAR
-   ============================================ */
-.progress-bar {
-  height: 6px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-  position: relative;
-  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.progress-bar-fill::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  animation: shimmerSlide 2s linear infinite;
-}
-
-/* ============================================
-   REDUCED MOTION
-   ============================================ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ============================================
-   TOOLTIP STYLE
-   ============================================ */
-.tooltip {
-  position: relative;
-}
-.tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 12px;
-  background: rgba(15, 15, 30, 0.95);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #e2e8f0;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  backdrop-filter: blur(8px);
-}
-.tooltip:hover::after { opacity: 1; }
-
-/* ============================================
-   NOISE TEXTURE
-   ============================================ */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
