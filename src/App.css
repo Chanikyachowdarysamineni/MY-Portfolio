@@ -1,4 +1,6 @@
-/* App-specific styles */
-.App {
-  text-align: center;
+/* App-level overrides — keep this minimal, main styles in index.css */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
