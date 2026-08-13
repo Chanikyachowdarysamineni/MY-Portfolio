@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   FaExternalLinkAlt, FaGithub, FaTimes,
   FaShieldAlt, FaBolt, FaLayerGroup, FaClipboardList, FaUsers, FaCloud,
-  FaArrowRight, FaCheck,
+  FaArrowRight, FaCheck, FaGraduationCap,
 } from 'react-icons/fa'
 import { HiSparkles } from 'react-icons/hi'
 
@@ -38,6 +38,30 @@ const clientProjects = [
     ],
     impact: 'Eliminated manual stock errors and cut inventory reconciliation time by 80%.',
     live: 'https://electricity-inventory-management-ivm.onrender.com',
+    github: null,
+    status: 'Live',
+  },
+  {
+    id: 'tpi',
+    title: 'Training, Placements & Internships',
+    subtitle: 'Campus Recruitment & Skill Portal',
+    description:
+      'An end-to-end enterprise portal built to streamline campus recruitment drives, student training programs, and internship placements. Features automated drive eligibility matching, student application tracking, attendance management, and year-over-year placement analytics.',
+    icon: FaGraduationCap,
+    accent: '#8B5CF6',
+    gradFrom: '#8B5CF6',
+    gradTo: '#00D4FF',
+    bgPattern: 'radial-gradient(ellipse 80% 60% at 30% 30%, rgba(139,92,246,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 70% 70%, rgba(0,212,255,0.12) 0%, transparent 60%)',
+    tags: ['React', 'Redux Toolkit', 'TanStack Query', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS'],
+    features: [
+      'Placement & internship drive management',
+      'Automated student eligibility matching',
+      'Training modules & attendance tracking',
+      'Student profile & application pipeline',
+      'Year-over-year placement analytics',
+    ],
+    impact: 'Automated placement eligibility checks and unified training & recruitment drives for hundreds of students.',
+    live: 'https://training-placement-internships.onrender.com/',
     github: null,
     status: 'Live',
   },
@@ -523,9 +547,9 @@ const Projects = () => {
               className="flex flex-wrap justify-center gap-6 mt-10"
             >
               {[
-                { v: '5',   l: 'Projects',       c: '#6C63FF' },
+                { v: `${clientProjects.length + personalProjects.length}`,   l: 'Projects',       c: '#6C63FF' },
                 { v: '2',   l: 'Categories',      c: '#00D4FF' },
-                { v: '3',   l: 'Live Deployments',c: '#10B981' },
+                { v: `${[...clientProjects, ...personalProjects].filter(p => p.live).length}`,   l: 'Live Deployments',c: '#10B981' },
                 { v: '10+', l: 'Technologies',    c: '#F59E0B' },
               ].map(({ v, l, c }) => (
                 <div key={l} className="flex flex-col items-center gap-0.5">
